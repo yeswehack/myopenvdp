@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,width=device-width">
+
+    <title>UMD test</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/quasar@2/dist/quasar.prod.css" rel="stylesheet" type="text/css">
+    <link href="dist/index.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <div id="q-app">
+      <q-layout view="lHh Lpr fff">
+        <q-header elevated>
+          <q-toolbar>
+            <q-toolbar-title>
+              quasar-ui-qui v{{ version }}
+            </q-toolbar-title>
+
+            <div>
+              <q-toggle
+                v-model="darkMode"
+                label="Dark Mode"
+                color="black"
+                left-label
+                keep-color
+              ></q-toggle>
+              <span>Quasar v{{ $q.version }}</span>
+            </div>
+          </q-toolbar>
+        </q-header>
+
+        <q-page-container>
+          <q-page padding class="row">
+            <!-- <ul class="q-mb-lg">
+              <li>In /ui, run: "yarn build"</li>
+              <li class="text-red">You need to build & refresh page on each change manually.</li>
+              <li>Use self-closing tags only!</li>
+              <li>Example: &lt;my-component&gt;&lt;/my-component&gt;</li>
+            </ul> -->
+            <vdp-form
+              :pgp-keys="pgpKeys"
+              :attachment-max-size-bytes="2 * 1024 * 1024"
+              :attachment-allowed-extensions="extensions"
+              @submit="submit"
+            ></vdp-form>
+          </q-page>
+        </q-page-container>
+      </q-layout>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quasar@2/dist/quasar.umd.prod.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue-i18n@9.1.10/dist/vue-i18n.global.prod.js"></script> -->
+    <script src="dist/index.umd.min.js"></script>
+
+    <script>
+      const app = Vue.createApp({
+        setup () {
+          return {
+            submit: (payload, success, failure) => {
+              console.log(payload)
+              failure('');
+            },
+            version: vdpForm.version,
+            extensions: 'jpeg jpg png gif tiff bmp'.split(' '),
+            pgpKeys: [
+              {
+                name: 'Default',
+                key: `-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+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
+=wicI
+-----END PGP PUBLIC KEY BLOCK-----`,
+              },
+            ],
+          };
+        },
+        computed: {
+          darkMode: {
+            get: () => Quasar.Dark.isActive,
+            set: (value) => Quasar.Dark.set(value),
+          },
+        },
+      });
+      app.use(Quasar, {
+        config: {
+          dark: false,
+        },
+      });
+      app.use(vdpForm);
+      app.mount('#q-app');
+    </script>
+  </body>
+</html>

@@ -1,0 +1,16 @@
+image: docker:18.09
+
+variables:
+  GIT_DEPTH: 0
+  GIT_SUBMODULE_STRATEGY: recursive
+
+stages:
+  - check
+
+lint:
+  stage: check
+  tags:
+    - docker20
+  image: node:18-alpine
+  script:
+    - cd ui && yarn install && yarn lint

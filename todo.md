@@ -1,0 +1,15 @@
+- [ ] licensing ?
+- [ ] set translations via props
+- [ ] optional captcha
+- [x] refactor elements (rows, columns)
+- [x] set max sizes via props
+- [x] file types via props
+- [ ] policy dialog size
+  - [x] $q notify instead?
+    - [ ] configure via props
+- [x] certs via props
+- [x] multiple certs
+- [ ] report.md template via props
+- [ ] resolve un-overridable style.css when building in build/script.javascript.mjs
+- [ ] document everything
+- [X] submit via event/emit
