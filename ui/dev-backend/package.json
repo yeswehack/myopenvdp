@@ -1,0 +1,19 @@
+{
+  "name": "dev-backend",
+  "version": "0.0.1",
+  "description": "A minimal backend for VDP submission",
+  "productName": "dev-backend",
+  "author": "Matthieu Honel <m.honel@yeswehack.com>",
+  "private": true,
+  "scripts": {
+    "dev": "yarn install && node src/backend.mjs"
+  },
+  "dependencies": {
+    "formidable": "^2.0.1"
+  },
+  "engines": {
+    "node": "^18 || ^16 || ^14.19",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "extends": "@quasar/app-vite/tsconfig-preset",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "paths": {
+      "tslib": ["node_modules/tslib/tslib.d.ts"]
+    },
+    "lib": ["ES2021", "DOM"],
+    "jsx": "preserve",
+    "types": [
+      "node",
+    ],
+    "noErrorTruncation": true
+  },
+  "include": [
+    "build/**/*.js",
+    "build/**/*.mjs",
+    "src/**/*.ts",
+    "src/**/*.js",
+    "src/**/*.vue"
+  ],
+}
