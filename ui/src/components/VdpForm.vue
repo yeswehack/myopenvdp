@@ -785,6 +785,10 @@ onMounted(() => {
 @import 'quasar/src/css/variables.sass';
 
 .vdp-form {
+  :deep(a) {
+    color: $primary;
+  }
+
   .choose-pgp-key {
     border: solid 1px $primary !important;
     border-radius: $generic-border-radius !important;
