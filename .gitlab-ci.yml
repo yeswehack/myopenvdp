@@ -13,6 +13,9 @@ lint:
   tags:
     - docker20
   image: node:18-alpine
+  cache:
+    paths:
+      - ui/node_modules
   script:
     - cd ui && yarn install && yarn lint
 
