@@ -6,6 +6,7 @@ variables:
 
 stages:
   - check
+  - build
 
 lint:
   stage: check
@@ -14,3 +15,18 @@ lint:
   image: node:18-alpine
   script:
     - cd ui && yarn install && yarn lint
+
+build-ui:
+  stage: build
+  tags:
+    - docker20
+  image: node:18-alpine
+  cache:
+    paths:
+      - ui/node_modules
+  script:
+    - cd ui && yarn install && yarn build
+  artifacts:
+    paths:
+      - ui/dist
+    expire_in: 1 day
