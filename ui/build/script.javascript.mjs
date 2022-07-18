@@ -51,7 +51,8 @@ await build([
 ]);
 
 async function buildEntry(options) {
-  await viteBuild({
+  return viteBuild({
+    clearScreen: false,
     build: {
       emptyOutDir: false,
       lib: {
