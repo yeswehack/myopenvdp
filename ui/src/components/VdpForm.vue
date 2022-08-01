@@ -304,7 +304,7 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, reactive, ref, unref, toRaw, watch } from 'vue';
-import { useQuasar, format } from 'quasar';
+import { useQuasar, format, QNotifyCreateOptions } from 'quasar';
 import JSZip from 'jszip';
 import cvss from 'cvss';
 import { Attachment, CvssMeta, ReportData, Submission, SubmissionLog } from './types';
@@ -329,6 +329,8 @@ import VdpSubmissionLogs from './VdpSubmissionLogs.vue';
 const $q = useQuasar();
 const { humanStorageSize } = format;
 
+type NotifyPosition = QNotifyCreateOptions['position'];
+
 interface Props {
   pgpKeys: {
     name: string;
@@ -336,11 +338,17 @@ interface Props {
   }[];
   attachmentMaxSizeBytes?: number;
   attachmentAllowedExtensions?: string[];
+  notificationsPosition?: NotifyPosition,
+  errorsNotificationPosition?: NotifyPosition,
+  disclosurePolicyNotificationPosition?: NotifyPosition,
 }
 
 const props = withDefaults(defineProps<Props>(), {
   attachmentMaxSizeBytes: 2 * 1024 * 1024,
   attachmentAllowedExtensions: () => defaultAllowedFileExtensions,
+  notificationsPosition: 'top',
+  errorsNotificationPosition: undefined,
+  disclosurePolicyNotificationPosition: undefined,
 });
 
 type SubmitSuccessCallback = () => void;
@@ -502,6 +510,7 @@ function openPolicy() {
     html: true,
     timeout: 60 * 1000,
     multiLine: true,
+    position: props.disclosurePolicyNotificationPosition || props.notificationsPosition,
     actions: [
       {
         label: tr('disclosurePolicyAcceptLabel'),
@@ -762,7 +771,7 @@ function notifyError(message: string) {
   $q.notify({
     type: 'negative',
     group: 'notifications',
-    position: 'top',
+    position: props.errorsNotificationPosition || props.notificationsPosition,
     timeout: 6000,
     html: true,
     message,
