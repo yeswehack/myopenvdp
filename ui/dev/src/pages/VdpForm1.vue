@@ -7,6 +7,8 @@
       :pgp-keys="pgpKeys"
       :attachment-max-size-bytes="4 * 1024 * 1024"
       :attachment-allowed-extensions="extensions"
+      disclosure-policy-notification-position="bottom-left"
+      errors-notification-position="top-right"
       @submit="logSubmit"
     />
   </q-page>
