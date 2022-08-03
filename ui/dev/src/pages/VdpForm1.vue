@@ -108,13 +108,15 @@ rCHIDOh1bOdGsOYVS9BaSuhPtwf/zYAC9VA+mI2qzQJji7thrBsx
 -----END PGP PUBLIC KEY BLOCK-----`,
   },
 ]);
-function logSubmit(
-  payload: unknown,
-  success: () => void,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  failure: (message?: string) => void
-) {
-  console.log(payload);
-  setTimeout(() => success(), 500);
+function logSubmit(payload: unknown, success: () => void, failure: (message?: string) => void) {
+  const body = new FormData();
+  body.append('report', JSON.stringify(payload));
+  const config: RequestInit = {
+    method: 'POST',
+    body,
+  };
+  fetch('https://vdp-form-backend.localhost/api/upload', config)
+    .then(() => success())
+    .catch((reason) => failure(reason as string));
 }
 </script>
