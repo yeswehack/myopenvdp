@@ -6,14 +6,15 @@
   "author": "Matthieu Honel <m.honel@yeswehack.com>",
   "private": true,
   "scripts": {
-    "dev": "quasar dev",
-    "dev:ssr": "quasar dev -m ssr",
-    "dev:ios": "quasar dev -m ios",
-    "dev:android": "quasar dev -m android",
-    "dev:electron": "quasar dev -m electron",
-    "lint": "eslint --ext .js,.ts,.vue ./",
-    "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
-    "test": "echo \"No test specified\" && exit 0"
+    "dev": "$(yarn bin quasar) dev",
+    "dev:ssr": "$(yarn bin quasar) dev -m ssr",
+    "dev:ios": "$(yarn bin quasar) dev -m ios",
+    "dev:android": "$(yarn bin quasar) dev -m android",
+    "dev:electron": "$(yarn bin quasar) dev -m electron",
+    "lint": "$(yarn bin eslint) --ext .js,.ts,.vue ./",
+    "format": "$(yarn bin prettier) --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
+    "test": "echo \"No test specified\" && exit 0",
+    "cert": "wrap () { CN=$(echo -n $* | xargs -d' ' -I@ echo -n '/CN=@'); mkdir -p cert; openssl req -new -x509 -newkey rsa:4096 -nodes -keyout cert/vdp-form-dev.key.pem -out cert/vdp-form-dev.cert.pem -days 3650 -subj '/C=FR/ST=Normandy/L=Rouen/O=Zerodisclo/OU=VDP Form'$CN; }; wrap"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",

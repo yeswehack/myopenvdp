@@ -1,19 +1,26 @@
 {
   "name": "dev-backend",
-  "version": "0.0.1",
-  "description": "A minimal backend for VDP submission",
-  "productName": "dev-backend",
-  "author": "Matthieu Honel <m.honel@yeswehack.com>",
-  "private": true,
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
   "scripts": {
-    "dev": "yarn install && node src/backend.mjs"
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "cert": "wrap () { CN=$(echo -n $* | xargs -d' ' -I@ echo -n '/CN=@'); mkdir -p cert; openssl req -new -x509 -newkey rsa:4096 -nodes -keyout cert/vdp-form-backend.key.pem -out cert/vdp-form-backend.cert.pem -days 3650 -subj '/C=FR/ST=Normandy/L=Rouen/O=Zerodisclo/OU=VDP Form'$CN; }; wrap",
+    "format": "$(yarn bin prettier) --write \"**/*.{ts,json}\" --ignore-path .gitignore"
   },
   "dependencies": {
+    "args": "^5.0.3",
+    "express": "^4.18.1",
     "formidable": "^2.0.1"
   },
-  "engines": {
-    "node": "^18 || ^16 || ^14.19",
-    "npm": ">= 6.13.4",
-    "yarn": ">= 1.21.1"
+  "devDependencies": {
+    "@types/args": "^5.0.0",
+    "@types/express": "^4.17.13",
+    "@types/formidable": "^2.0.5",
+    "@types/node": "^18.6.3",
+    "prettier": "^2.5.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4"
   }
 }

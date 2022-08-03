@@ -7,16 +7,16 @@
   "module": "dist/index.esm.js",
   "main": "dist/index.common.js",
   "scripts": {
-    "dev": "echo 'Entering ./dev' && cd dev && yarn dev && cd ..",
+    "dev": "echo 'Entering ./dev' && cd dev && yarn install && yarn dev",
     "dev:umd": "yarn build && node build/script.open-umd.js",
-    "dev:ssr": "echo 'Entering ./dev' && cd dev && yarn 'dev:ssr' && cd ..",
-    "dev:ios": "echo 'Entering ./dev' && cd dev && yarn 'dev:ios' && cd ..",
-    "dev:android": "echo 'Entering ./dev' && cd dev && yarn 'dev:android' && cd ..",
-    "dev:electron": "echo 'Entering ./dev' && cd dev && yarn 'dev:electron' && cd ..",
-    "dev:backend": "cd dev-backend && yarn dev && cd ..",
+    "dev:ssr": "echo 'Entering ./dev' && cd dev && yarn install && yarn 'dev:ssr'",
+    "dev:ios": "echo 'Entering ./dev' && cd dev && yarn install && yarn 'dev:ios'",
+    "dev:android": "echo 'Entering ./dev' && cd dev && yarn install && yarn 'dev:android'",
+    "dev:electron": "echo 'Entering ./dev' && cd dev && yarn install && yarn 'dev:electron'",
+    "dev:backend": "cd dev-backend && yarn install && yarn dev",
     "build": "node build/index.mjs",
-    "lint": "eslint --ext .js,.ts,.vue ./src && echo 'Entering ./dev' && cd dev && yarn lint && cd ..",
-    "format": "prettier --write \"./{src,build}/**/*.{js,mjs,ts,vue,scss,html,md,json}\" --ignore-path .gitignore && echo 'Entering ./dev' && cd dev && yarn format && cd .."
+    "lint": "$(yarn bin eslint) --ext .js,.ts,.vue ./src && echo 'Entering ./dev' && cd dev && yarn install && yarn lint",
+    "format": "$(yarn bin prettier) --write \"./{src,build}/**/*.{js,mjs,ts,vue,scss,html,md,json}\" --ignore-path .gitignore && echo 'Entering ./dev' && cd dev && yarn install && yarn format && cd .. && echo 'Entering ./dev-backend' && cd dev-backend && yarn install && yarn format"
   },
   "repository": {
     "type": "git",
