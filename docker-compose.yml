@@ -10,6 +10,7 @@ services:
     - ./ui/docker/traefik/traefik.yaml:/etc/traefik/traefik.yaml
     - ./ui/docker/traefik/cert/:/certs/
     ports:
+    - 8081:8081
     - 443:443
     - 9091:9091
     healthcheck:
@@ -79,6 +80,20 @@ services:
       traefik.http.routers.vdp-form-backend.entrypoints: websecure
       traefik.http.routers.vdp-form-backend.tls: true
       traefik.http.services.vdp-form-backend.loadbalancer.server.port: 8082
+    depends_on:
+      traefik:
+        condition: service_healthy
+
+  registry:
+    image: verdaccio/verdaccio:5
+    networks:
+    - vdp-form
+    labels:
+      service.name: vdp-form-registry
+      traefik.enable: true
+      traefik.http.routers.vdp-form-registry.rule: Host(`vdp-form-registry.localhost`)
+      traefik.http.routers.vdp-form-registry.entrypoints: web
+      traefik.http.services.vdp-form-registry.loadbalancer.server.port: 4873
     depends_on:
       traefik:
         condition: service_healthy

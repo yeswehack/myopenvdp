@@ -1,5 +1,7 @@
 /build
 /dev
+/dev-backend
+/docker
 umd-test.html
 
 .DS_Store

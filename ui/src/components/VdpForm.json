@@ -1,0 +1,192 @@
+{
+  "type": "component",
+  "mixins": [ ],
+
+  "meta": {
+  },
+
+  "props": {
+
+    "pgp-keys": {
+      "type": "Array",
+      "desc": "Array of PGP public keys. Each entry must be an object with 2 properties : 'name' containing the name to be displayed and 'key' containing the PGP key",
+      "examples": [ "[{\"name\":\"Key 1\",\"key\":\"-----BEGIN PGP PUBLIC KEY BLOCK-----\\n...\"},{\"name\":\"Key 2\",\"key\":\"-----BEGIN PGP PUBLIC KEY BLOCK-----\\n...\"}]" ],
+      "category": "content",
+      "required": true
+    },
+
+    "attachment-max-size-bytes": {
+      "type": "Number",
+      "desc": "Maximum size of individual attachments, in bytes",
+      "default": 2097152,
+      "category": "behavior"
+    },
+
+    "attachment-allowed-extensions": {
+      "type": "Array",
+      "desc": "A list of allowed extension for attachments",
+      "examples": [ "['txt','png','jpg']" ],
+      "default": "['jpg', 'jpeg', 'png', 'txt']",
+      "category": "behavior"
+    },
+
+    "notifications-position": {
+      "type": "String",
+      "desc": "Default position for notifications",
+      "default": "top",
+      "values": [
+        "top-left",
+        "top-right",
+        "bottom-left",
+        "bottom-right",
+        "top",
+        "bottom",
+        "left",
+        "right",
+        "center"
+      ],
+      "category": "behavior"
+    },
+
+    "errors-notification-position": {
+      "type": "String",
+      "desc": "Position for errors notification. Inherits from 'notifications-position' if not set",
+      "values": [
+        "top-left",
+        "top-right",
+        "bottom-left",
+        "bottom-right",
+        "top",
+        "bottom",
+        "left",
+        "right",
+        "center"
+      ],
+      "category": "behavior"
+    },
+
+    "disclosure-policy-notification-position": {
+      "type": "String",
+      "desc": "Position for disclosure policy notification. Inherits from 'notifications-position' if not set",
+      "values": [
+        "top-left",
+        "top-right",
+        "bottom-left",
+        "bottom-right",
+        "top",
+        "bottom",
+        "left",
+        "right",
+        "center"
+      ],
+      "category": "behavior"
+    }
+
+  },
+
+  "events": {
+
+    "submit": {
+      "desc": "Emitted when the report is submitted ; one of 'success' or 'failure' callback MUST be called after receiving this event, on the component will stop to behave correctly.",
+      "params": {
+        "payload": {
+          "type": "Object",
+          "desc": "The content of the report",
+          "definition": {
+            "report": {
+              "type": "Object",
+              "desc": "The report",
+              "definition": {
+                "title": {
+                  "type": "String",
+                  "desc": "The title of the report"
+                },
+                "product": {
+                  "type": "String",
+                  "desc": "The product affected by the vulnerability"
+                },
+                "cvss": {
+                  "type": "Object",
+                  "desc": "CVSS3 metrics",
+                  "definition": {
+                    "AV": {
+                      "type": "string",
+                      "desc": "Attack Vector",
+                      "values": ["N", "A", "L", "P"]
+                    },
+                    "AC": {
+                      "type": "string",
+                      "desc": "Attack Complexity",
+                      "values": ["L", "H"]
+                    },
+                    "PR": {
+                      "type": "string",
+                      "desc": "Privileges Required",
+                      "values": ["N", "L", "H"]
+                    },
+                    "S": {
+                      "type": "string",
+                      "desc": "Scope",
+                      "values": ["U", "C"]
+                    },
+                    "A": {
+                      "type": "string",
+                      "desc": "Availability",
+                      "values": ["N", "L", "H"]
+                    },
+                    "I": {
+                      "type": "string",
+                      "desc": "Integrity",
+                      "values": ["N", "L", "H"]
+                    },
+                    "C": {
+                      "type": "string",
+                      "desc": "Confidentiality",
+                      "values": ["N", "L", "H"]
+                    },
+                    "UI": {
+                      "type": "string",
+                      "desc": "User Interaction",
+                      "values": ["N", "R"]
+                    }
+                  }
+                },
+                "cvss_score": {
+                  "type": "Number",
+                  "desc": "Score of the CVSS"
+                },
+                "pgp_data": {
+                  "type": "String",
+                  "desc": "A PGP-encrypted ZIP archive containing the report's sensitive data (description, attachments, reporter information, ...)"
+                },
+                "hash_algorithm": {
+                  "type": "string",
+                  "desc": "The hash algorithm used to create the 'digest' of the ZIP archive before encryption"
+                },
+                "digest_hex": {
+                  "type": "string",
+                  "desc": "The hash of the ZIP archive generated by the 'hash_algorithm' before encryption"
+                }
+              }
+            }
+          }
+        },
+        "success": {
+          "type": "Function",
+          "desc": "A callback to call if the report has been handled successfully"
+        },
+        "failure": {
+          "type": "Function",
+          "desc": "A callback to call if handling the report has failed",
+          "params": {
+            "message": {
+              "type": "String",
+              "desc": "The failure message"
+            }
+          }
+        }
+      }
+    }
+  }
+
+}

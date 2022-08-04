@@ -2,3 +2,7 @@
 # yarn lockfile v1
 
 
+quasar-ui-vdp-form@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/quasar-ui-vdp-form/-/quasar-ui-vdp-form-0.0.1.tgz#65bb267872506c214f6bd06db66539f5bb43bae2"
+  integrity sha512-SSHAdlJ7Xyp79Dd0VcClLJbiT5/X+R4l3U2ChND15xgoMwnya0DTo5q/t7rYVWLf6De3Z9TUrCNX4fnM6D1cnA==

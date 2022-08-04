@@ -32,14 +32,14 @@ entryPoints:
   traefik:
     address: :9091
   web:
-    address: :80
+    address: :8081
     # comment out these lins if you don't want to redirect everything
-    http:
-      redirections:
-        entryPoint:
-          to: websecure
-          scheme: https
-          permanent: true
+    # http:
+    #   redirections:
+    #     entryPoint:
+    #       to: websecure
+    #       scheme: https
+    #       permanent: true
   websecure:
     address: :443
 

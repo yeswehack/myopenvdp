@@ -5,7 +5,8 @@ import { logError, readFileToJson } from './utils.mjs';
 import buildConf from './config.mjs';
 
 import { build as viteBuild } from 'vite';
-import viteVue from '@vitejs/plugin-vue';
+import vue from '@vitejs/plugin-vue'
+import { quasar, transformAssetUrls } from '@quasar/vite-plugin';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -80,7 +81,15 @@ async function buildEntry(options) {
         ],
       },
     },
-    plugins: [viteVue()],
+    plugins: [
+      vue({
+        template: { transformAssetUrls },
+      }),
+      quasar({
+        autoImportComponentCase: 'combined',
+        sassVariables: true,
+      })
+    ],
   });
 }
 function build(/** @type array[] */ builds) {
