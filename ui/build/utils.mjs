@@ -70,7 +70,6 @@ export function capitalizeFirstLetter(string) {
 }
 
 export class StringWriter {
-
   /**
    * @constructor
    * @param {object} [opts]
@@ -78,7 +77,6 @@ export class StringWriter {
    * @param {string} [opts.separator] - default is empty string ''
    */
   constructor(opts) {
-
     opts = opts || {};
     opts.eol = opts.eol || '\n';
     opts.separator = opts.separator || '';
@@ -119,9 +117,7 @@ export class StringWriter {
    * @returns {StringWriter}
    */
   writeFormat(format) {
-    return this.write(
-      util.format.apply(format, Array.prototype.slice.call(arguments))
-    );
+    return this.write(util.format.apply(format, Array.prototype.slice.call(arguments)));
   }
 
   /**
@@ -149,5 +145,4 @@ export class StringWriter {
   static create() {
     return new StringWriter();
   }
-
-};
+}

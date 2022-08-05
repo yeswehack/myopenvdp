@@ -8,8 +8,4 @@ function install(app) {
   app.component('VdpForm', VdpForm);
 }
 
-export {
-  version,
-  VdpForm,
-  install
-};
+export { version, VdpForm, install };

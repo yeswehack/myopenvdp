@@ -5,7 +5,7 @@ import { logError, readFileToJson } from './utils.mjs';
 import buildConf from './config.mjs';
 
 import { build as viteBuild } from 'vite';
-import vue from '@vitejs/plugin-vue'
+import vue from '@vitejs/plugin-vue';
 import { quasar, transformAssetUrls } from '@quasar/vite-plugin';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -88,7 +88,7 @@ async function buildEntry(options) {
       quasar({
         autoImportComponentCase: 'combined',
         sassVariables: true,
-      })
+      }),
     ],
   });
 }

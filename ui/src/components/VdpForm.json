@@ -1,16 +1,16 @@
 {
   "type": "component",
-  "mixins": [ ],
+  "mixins": [],
 
-  "meta": {
-  },
+  "meta": {},
 
   "props": {
-
     "pgp-keys": {
       "type": "Array",
       "desc": "Array of PGP public keys. Each entry must be an object with 2 properties : 'name' containing the name to be displayed and 'key' containing the PGP key",
-      "examples": [ "[{\"name\":\"Key 1\",\"key\":\"-----BEGIN PGP PUBLIC KEY BLOCK-----\\n...\"},{\"name\":\"Key 2\",\"key\":\"-----BEGIN PGP PUBLIC KEY BLOCK-----\\n...\"}]" ],
+      "examples": [
+        "[{\"name\":\"Key 1\",\"key\":\"-----BEGIN PGP PUBLIC KEY BLOCK-----\\n...\"},{\"name\":\"Key 2\",\"key\":\"-----BEGIN PGP PUBLIC KEY BLOCK-----\\n...\"}]"
+      ],
       "category": "content",
       "required": true
     },
@@ -25,7 +25,7 @@
     "attachment-allowed-extensions": {
       "type": "Array",
       "desc": "A list of allowed extension for attachments",
-      "examples": [ "['txt', 'png', 'jpg']" ],
+      "examples": ["['txt', 'png', 'jpg']"],
       "default": "['jpg', 'jpeg', 'png', 'txt']",
       "category": "behavior"
     },
@@ -34,58 +34,26 @@
       "type": "String",
       "desc": "Default position for notifications",
       "default": "top",
-      "values": [
-        "top-left",
-        "top-right",
-        "bottom-left",
-        "bottom-right",
-        "top",
-        "bottom",
-        "left",
-        "right",
-        "center"
-      ],
+      "values": ["top-left", "top-right", "bottom-left", "bottom-right", "top", "bottom", "left", "right", "center"],
       "category": "behavior"
     },
 
     "errors-notification-position": {
       "type": "String",
       "desc": "Position for errors notification. Inherits from 'notifications-position' if not set",
-      "values": [
-        "top-left",
-        "top-right",
-        "bottom-left",
-        "bottom-right",
-        "top",
-        "bottom",
-        "left",
-        "right",
-        "center"
-      ],
+      "values": ["top-left", "top-right", "bottom-left", "bottom-right", "top", "bottom", "left", "right", "center"],
       "category": "behavior"
     },
 
     "disclosure-policy-notification-position": {
       "type": "String",
       "desc": "Position for disclosure policy notification. Inherits from 'notifications-position' if not set",
-      "values": [
-        "top-left",
-        "top-right",
-        "bottom-left",
-        "bottom-right",
-        "top",
-        "bottom",
-        "left",
-        "right",
-        "center"
-      ],
+      "values": ["top-left", "top-right", "bottom-left", "bottom-right", "top", "bottom", "left", "right", "center"],
       "category": "behavior"
     }
-
   },
 
   "events": {
-
     "submit": {
       "desc": "Emitted when the report is submitted ; one of 'success' or 'failure' callback MUST be called after receiving this event, on the component will stop to behave correctly.",
       "params": {
@@ -188,5 +156,4 @@
       }
     }
   }
-
 }
