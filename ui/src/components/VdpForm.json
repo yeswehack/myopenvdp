@@ -25,7 +25,7 @@
     "attachment-allowed-extensions": {
       "type": "Array",
       "desc": "A list of allowed extension for attachments",
-      "examples": [ "['txt','png','jpg']" ],
+      "examples": [ "['txt', 'png', 'jpg']" ],
       "default": "['jpg', 'jpeg', 'png', 'txt']",
       "category": "behavior"
     },

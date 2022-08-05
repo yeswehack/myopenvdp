@@ -7,6 +7,13 @@
  */
 
 function extendConf (conf, api) {
+  conf.framework = conf.framework || {};
+  conf.framework.plugins = conf.framework.plugins || [];
+  if (!conf.framework.plugins.includes('Notify')) {
+    console.warn(` App • Extension(${api.extId}): Activating framework plugin 'Notify' ; add it to 'framework.plugins' list into your quasar configuration to get rid of this warning.`);
+    conf.framework.plugins.push('Notify');
+  }
+
   // register our boot file
   conf.boot.push('~quasar-app-extension-vdp-form/src/boot/register.js')
 
@@ -31,7 +38,6 @@ module.exports = function (api) {
   else if (api.hasWebpack) {
     api.compatibleWith('@quasar/app-webpack', '^3.4.0')
   }
-
 
   // Uncomment the line below if you provide a JSON API for your component
   api.registerDescribeApi('VdpForm', '~quasar-ui-vdp-form/src/components/VdpForm.json')
