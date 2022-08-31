@@ -20,7 +20,6 @@ export type ReportData = {
   policyAccepted: boolean;
   intellectualPropertyAccepted: boolean;
   captcha: {
-    key: string;
     value: string;
   };
   summary: {
@@ -51,6 +50,10 @@ export type CvssMeta = {
 };
 
 export type Submission = {
+  captcha?: {
+    key?: string;
+    value?: string;
+  };
   report: {
     title: string;
     product: string;
