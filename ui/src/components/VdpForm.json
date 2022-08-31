@@ -15,6 +15,39 @@
       "required": true
     },
 
+    "captcha-provider": {
+      "type": "Function",
+      "desc": "Provider of the captcha data (async function)",
+      "returns": {
+        "type": "Object",
+        "desc": "Captcha data",
+        "definition": {
+          "key": {
+            "required": true,
+            "type": "String",
+            "desc": "Unique key identifying this captcha data",
+            "examples": ["8ec3d9f8c7fb0caa15f7edc6630c803d"]
+          },
+          "url": {
+            "required": true,
+            "type": "String",
+            "desc": "URL of the captcha image",
+            "examples": ["data:image/jpeg;base64:...", "https://backend/captcha-8ec3d9f8c7fb0caa15f7edc6630c803d.jpeg"]
+          },
+          "width": {
+            "type": "Number",
+            "desc": "Width of the captcha image in pixels",
+            "examples": [300]
+          },
+          "height": {
+            "type": "Number",
+            "desc": "Height of the captcha image in pixels",
+            "examples": [64]
+          }
+        }
+      }
+    },
+
     "attachment-max-size-bytes": {
       "type": "Number",
       "desc": "Maximum size of individual attachments, in bytes",
@@ -61,6 +94,20 @@
           "type": "Object",
           "desc": "The content of the report",
           "definition": {
+            "captcha": {
+              "type": "Object",
+              "desc": "Captcha answer data (if captcha-provider provided)",
+              "definition": {
+                "key": {
+                  "type": "String",
+                  "desc": "Unique key identifying the captcha, as given by the captcha-provider"
+                },
+                "value": {
+                  "type": "String",
+                  "desc": "Captcha answer given by the reporter"
+                }
+              }
+            },
             "report": {
               "type": "Object",
               "desc": "The report",

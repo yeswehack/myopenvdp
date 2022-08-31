@@ -1,36 +1,41 @@
 <template>
-  <div>
-    <q-input
-      v-model="model"
-      :error="errorMessage != ''"
-      :error-message="errorMessage"
-      :maxlength="maxlen"
-      :type="textarea ? 'textarea' : 'text'"
-      v-bind="$attrs"
-      :label-slot="label != ''"
-      stack-label
-      outlined
-      hide-bottom-space
-      @blur="hadFocus = true"
-    >
-      <template
-        v-if="label"
-        #label
+  <div class="row">
+    <div class="col">
+      <q-input
+        v-model="model"
+        :maxlength="maxlen"
+        :type="textarea ? 'textarea' : 'text'"
+        v-bind="$attrs"
+        :label-slot="label != ''"
+        stack-label
+        outlined
+        hide-bottom-space
+        lazy-rules
+        :rules="rules"
       >
-        {{ label }}
-        <span
-          v-if="hint"
-          class="hint"
-          >({{ hint }})</span
+        <template
+          v-if="label"
+          #label
         >
-        <span :class="{ required }"></span>
-      </template>
-    </q-input>
+          {{ label }}
+          <span
+            v-if="hint"
+            class="hint"
+            >({{ hint }})</span
+          >
+          <span :class="{ required }"></span>
+        </template>
+      </q-input>
+    </div>
+    <slot
+      ref="extra"
+      name="extra"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, toRefs } from 'vue';
+import { computed, toRefs } from 'vue';
 import { renderTemplate } from '../utils';
 
 interface Props {
@@ -57,7 +62,6 @@ const { required, label, maxlen, textarea } = toRefs(props);
 
 const emit = defineEmits(['update:model-value']);
 
-const hadFocus = ref(false);
 const hint = computed(() => {
   return props.maxlen == -1 ? '' : renderTemplate(props.maxlenLabel, { max: props.maxlen });
 });
@@ -71,12 +75,7 @@ const model = computed({
   },
 });
 
-const errorMessage = computed(() => {
-  return hadFocus.value && props.required && !model.value ? props.requiredLabel : '';
-});
-onMounted(() => {
-  hadFocus.value = false;
-});
+const rules = [(value: unknown) => !props.required || !!value || props.requiredLabel];
 </script>
 
 <style lang="scss" scoped>

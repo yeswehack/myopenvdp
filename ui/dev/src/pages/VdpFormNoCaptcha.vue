@@ -108,14 +108,26 @@ rCHIDOh1bOdGsOYVS9BaSuhPtwf/zYAC9VA+mI2qzQJji7thrBsx
 -----END PGP PUBLIC KEY BLOCK-----`,
   },
 ]);
-function logSubmit(payload: unknown, success: () => void, failure: (message?: string) => void) {
+function logSubmit(
+  payload: {
+    captcha: unknown;
+    report: unknown;
+  },
+  success: () => void,
+  failure: (message?: string) => void
+) {
   const body = new FormData();
-  body.append('report', JSON.stringify(payload));
+  body.append('report', JSON.stringify(payload.report));
   const config: RequestInit = {
     method: 'POST',
     body,
   };
   fetch('https://vdp-form-backend.localhost/api/upload', config)
+    .then(async (response) => {
+      if (!response.ok) {
+        throw await response.text();
+      }
+    })
     .then(() => success())
     .catch((reason) => failure(reason as string));
 }

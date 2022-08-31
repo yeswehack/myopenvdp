@@ -6,6 +6,29 @@
   - **Description**: Array of PGP public keys. Each entry must be an object with 2 properties : 'name' containing the name to be displayed and 'key' containing the PGP key
   - **Example**:
     - `[{"name":"Key 1","key":"-----BEGIN PGP PUBLIC KEY BLOCK-----\n..."},{"name":"Key 2","key":"-----BEGIN PGP PUBLIC KEY BLOCK-----\n..."}]`
+- **`captcha-provider`** (Function)
+  - **Description**: Provider of the captcha data (async function)
+  - **Function form**: `() => Object`
+  - **Returns** Object:
+    - **Description**: Captcha data
+    - **Props**:
+      - **`key`** (String) [Required]
+        - **Description**: Unique key identifying this captcha data
+        - **Example**:
+          - `8ec3d9f8c7fb0caa15f7edc6630c803d`
+      - **`url`** (String) [Required]
+        - **Description**: URL of the captcha image
+        - **Examples**:
+          - `data:image/jpeg;base64:...`
+          - `https://backend/captcha-8ec3d9f8c7fb0caa15f7edc6630c803d.jpeg`
+      - **`width`** (Number)
+        - **Description**: Width of the captcha image in pixels
+        - **Example**:
+          - `300`
+      - **`height`** (Number)
+        - **Description**: Height of the captcha image in pixels
+        - **Example**:
+          - `64`
 - **`attachment-max-size-bytes`** (Number)
   - **Description**: Maximum size of individual attachments, in bytes
   - **Default value**: `2097152`
@@ -33,6 +56,13 @@
     - **`payload`** (Object)
       - **Description**: The content of the report
       - **Props**:
+        - **`captcha`** (Object)
+          - **Description**: Captcha answer data (if captcha-provider provided)
+          - **Props**:
+            - **`key`** (String)
+              - **Description**: Unique key identifying the captcha, as given by the captcha-provider
+            - **`value`** (String)
+              - **Description**: Captcha answer given by the reporter
         - **`report`** (Object)
           - **Description**: The report
           - **Props**:

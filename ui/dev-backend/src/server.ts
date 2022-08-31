@@ -2,6 +2,8 @@ import http from 'http';
 import express from 'express';
 import args from 'args';
 import formidable from 'formidable';
+import Captcha from './captcha';
+import { encryptString, decryptString } from 'encrypt-string';
 
 import { join, resolve } from 'path';
 import { writeFileSync as fsWriteFile, readFileSync as fsReadFile, readdirSync as fsReadDir } from 'fs';
@@ -16,6 +18,7 @@ const flags = args.parse(process.argv);
 const app = express();
 const hostname = flags.host ? '0.0.0.0' : '127.0.0.1';
 const port = flags.port as number;
+const captchaCryptPassword = 'P4$sw0Rd!';
 
 // Handling GET / requests
 app.get('/', (request, response) => {
@@ -69,6 +72,27 @@ app.get('/reports', (request, response) => {
   response.send(html);
 });
 
+// Handling GET /api/captcha requests
+app.get('/api/captcha', async (request, response) => {
+  response.writeHead(200, {
+    'Access-Control-Allow-Origin': '*',
+  });
+  const captcha = new Captcha(
+    request.query.w ? Number.parseInt(request.query.w as string) : 200,
+    request.query.h ? Number.parseInt(request.query.h as string) : 56
+  );
+  const key = await encryptString(captcha.getValue(), captchaCryptPassword);
+  response.write(
+    JSON.stringify({
+      key: key,
+      url: await captcha.getDataURL(),
+      width: captcha.getWidth(),
+      height: captcha.getHeight(),
+    })
+  );
+  response.end();
+});
+
 // Handles POST /api/upload requests
 app.options('/api/upload', (request, response) => {
   response.writeHead(200, {
@@ -76,15 +100,40 @@ app.options('/api/upload', (request, response) => {
   });
   response.end();
 });
-app.post('/api/upload', (request, response) => {
-  const form = formidable({ multiples: true });
-  response.setHeader('Access-Control-Allow-Origin', '*');
-
-  form.parse(request, (err, fields, files) => {
+const getUploadParseRequestCallback = (useCaptcha: boolean) =>
+  async (
+    response: express.Response,
+    err: any,
+    fields: formidable.Fields,
+    files: formidable.Files,
+  ) => {
     if (err) {
       response.writeHead(err.httpCode || 400, { 'Content-Type': 'text/plain' });
       response.end(String(err));
       return;
+    }
+    if (useCaptcha) {
+      if ('captcha' in fields) {
+        const captcha = JSON.parse(fields['captcha'] as string) as { key: string; value: string };
+        let decryptedCaptcha;
+        try {
+          decryptedCaptcha = await decryptString(captcha.key, captchaCryptPassword);
+        } catch (e) {
+          response.writeHead(401, { 'Content-Type': 'text/plain' });
+          response.end(`Captcha error (${e})!`);
+          return;
+        }
+        if (decryptedCaptcha.toLowerCase() != captcha.value.toLowerCase()) {
+          response.writeHead(401, { 'Content-Type': 'text/plain' });
+          response.end('Captcha error!');
+          return;
+        }
+      }
+      else {
+        response.writeHead(401, { 'Content-Type': 'text/plain' });
+        response.end('Captcha error (not provided)!');
+        return;
+      }
     }
     if ('report' in fields) {
       const report = fields['report'] as string;
@@ -104,6 +153,24 @@ app.post('/api/upload', (request, response) => {
     });
     response.write(JSON.stringify({ fields, files }, null, 2));
     response.end();
+  };
+
+const uploadParseRequestCaptchaCallback = getUploadParseRequestCallback(true);
+const uploadParseRequestNoCaptchaCallback = getUploadParseRequestCallback(false);
+app.post('/api/upload/captcha', (request, response) => {
+  const form = formidable({ multiples: true });
+  response.setHeader('Access-Control-Allow-Origin', '*');
+
+  form.parse(request, async (err, fields, files) => {
+    await uploadParseRequestCaptchaCallback(response, err, fields, files);
+  });
+});
+app.post('/api/upload', (request, response) => {
+  const form = formidable({ multiples: true });
+  response.setHeader('Access-Control-Allow-Origin', '*');
+
+  form.parse(request, async (err, fields, files) => {
+    await uploadParseRequestNoCaptchaCallback(response, err, fields, files);
   });
 });
 

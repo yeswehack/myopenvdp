@@ -261,6 +261,26 @@
             </div>
           </div>
         </div>
+        <div
+          v-if="providedCaptchaData"
+          class="row"
+        >
+          <div class="col">
+            <vdp-captcha
+              ref="captcha"
+              v-model:captcha-value="form.captcha.value"
+              v-model:captcha-url="providedCaptchaData.url"
+              v-model:captcha-width="providedCaptchaData.width"
+              v-model:captcha-height="providedCaptchaData.height"
+              :label="tr('captchaLabel')"
+              :placeholder="tr('captchaPlaceholder')"
+              required
+              :required-label="tr('valueMustNotBeBlank')"
+              class="captcha"
+              @refresh="refreshCaptcha"
+            />
+          </div>
+        </div>
         <div class="row">
           <div class="col">
             <q-checkbox
@@ -318,6 +338,7 @@ import {
 } from './utils';
 import { renderTemplate } from '../utils';
 import { rawTr, tr } from './i18n/tr';
+import VdpCaptcha from './VdpCaptcha.vue';
 import VdpCvss from './VdpCvss.vue';
 import VdpField from './VdpField.vue';
 import VdpInput from './VdpInput.vue';
@@ -330,6 +351,12 @@ const $q = useQuasar();
 const { humanStorageSize } = format;
 
 type NotifyPosition = QNotifyCreateOptions['position'];
+type CaptchaData = {
+  url: string;
+  key: string;
+  width?: number;
+  height?: number;
+};
 
 interface Props {
   pgpKeys: {
@@ -341,6 +368,7 @@ interface Props {
   notificationsPosition?: NotifyPosition;
   errorsNotificationPosition?: NotifyPosition;
   disclosurePolicyNotificationPosition?: NotifyPosition;
+  captchaProvider?: () => Promise<CaptchaData>;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -349,6 +377,7 @@ const props = withDefaults(defineProps<Props>(), {
   notificationsPosition: 'top',
   errorsNotificationPosition: undefined,
   disclosurePolicyNotificationPosition: undefined,
+  captchaProvider: undefined,
 });
 
 type SubmitSuccessCallback = () => void;
@@ -357,11 +386,12 @@ const emit = defineEmits<{
   (e: 'submit', payload: Submission, success: SubmitSuccessCallback, failure: SubmitFailureCallback): void;
 }>();
 
+let providedCaptchaData = ref<CaptchaData | null>(null);
+
 const form = reactive<ReportData>({
   policyAccepted: true,
   intellectualPropertyAccepted: true,
   captcha: {
-    key: '',
     value: '',
   },
   summary: {
@@ -418,7 +448,6 @@ const form = reactive<ReportData>({
   policyAccepted: false,
   intellectualPropertyAccepted: false,
   captcha: {
-    key: '',
     value: '',
   },
   summary: {
@@ -450,8 +479,8 @@ const form = reactive<ReportData>({
     C: '',
     UI: '',
   },
-});*/
-
+});
+*/
 const pgpKeySelectOptions = computed(() => props.pgpKeys.map((pgpKey) => ({ label: pgpKey.name, value: pgpKey.name })));
 
 const computedCvss = computed<CvssMeta>(() => ({
@@ -638,6 +667,10 @@ async function encryptReport(zipBlob: Blob, key: string) {
 async function sendReport(zipBlob: Blob, pgpMessage: string) {
   const zipBlobPlainHash = await digestBlob(zipBlob);
   const submission: Submission = {
+    captcha: {
+      key: providedCaptchaData.value?.key,
+      value: form.captcha.value,
+    },
     report: {
       title: form.summary.title,
       product: form.summary.product,
@@ -690,7 +723,7 @@ async function submit() {
   resetSubmissionLogs();
   return Promise.resolve(
     getRequiredFieldsErrors(tr, form, {
-      noCaptcha: true,
+      noCaptcha: !providedCaptchaData.value,
     })
   )
     .then((errors) => {
@@ -764,6 +797,7 @@ async function submit() {
       notifyError(error as string);
     })
     .finally(() => {
+      void refreshCaptcha();
       submitting.value = false;
     });
 }
@@ -783,7 +817,13 @@ watch(form, () => {
   resetSubmissionLogs();
 });
 
-onMounted(() => {
+const refreshCaptcha = async () => {
+  if (props.captchaProvider) {
+    providedCaptchaData.value = await props.captchaProvider();
+  }
+};
+onMounted(async () => {
+  await refreshCaptcha();
   if (props.pgpKeys.length == 1) {
     form.summary.pgpKey = props.pgpKeys[0].name;
   }
