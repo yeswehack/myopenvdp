@@ -2,8 +2,6 @@
   <div>
     <q-select
       v-model="model"
-      :error="errorMessage != ''"
-      :error-message="errorMessage"
       :options="options"
       v-bind="$attrs"
       emit-value
@@ -11,7 +9,8 @@
       stack-label
       outlined
       hide-bottom-space
-      @blur="hadFocus = true"
+      lazy-rules
+      :rules="rules"
     >
       <template #label>
         {{ label }}
@@ -31,7 +30,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, onMounted } from 'vue';
+import { computed } from 'vue';
 
 export type SelectOption<T = unknown> = {
   label: string;
@@ -57,8 +56,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits(['update:model-value']);
 
-const hadFocus = ref(false);
-
 const options = computed(() => [
   {
     label: props.placeholder,
@@ -78,13 +75,7 @@ const model = computed({
 });
 const displayValue = computed(() => options.value.find((v) => v.value == model.value)?.label);
 
-onMounted(() => {
-  hadFocus.value = false;
-});
-
-const errorMessage = computed(() => {
-  return hadFocus.value && props.required && model.value === '' ? props.requiredLabel : '';
-});
+const rules = [(value: unknown) => !props.required || !!value || props.requiredLabel];
 </script>
 
 <style lang="scss" scoped>
