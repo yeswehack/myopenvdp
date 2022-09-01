@@ -1,330 +1,339 @@
 <template>
-  <div
-    ref="formRef"
-    class="col column vdp-form"
+  <q-form
+    ref="vdpForm"
+    greedy
+    class="col column"
   >
-    <div class="row justify-center">
-      <div class="col column q-col-gutter-md">
-        <div class="text-h5 summary-header">
-          {{ tr('vulnerabilitySummaryTitle') }}
-        </div>
-        <vdp-input
-          v-model="form.summary.title"
-          :label="tr('reportTitleLabel')"
-          required
-          :required-label="tr('valueMustNotBeBlank')"
-          :placeholder="tr('reportTitlePlaceholder')"
-          :maxlen-label="rawTr('maxChars')"
-          :maxlen="250"
-          class="summary-title"
-        />
-        <vdp-input
-          v-model="form.summary.product"
-          :label="tr('productLabel')"
-          required
-          :required-label="tr('valueMustNotBeBlank')"
-          :placeholder="tr('productPlaceholder')"
-          :maxlen-label="rawTr('maxChars')"
-          :maxlen="250"
-          class="summary-product"
-        />
-        <vdp-select
-          v-if="pgpKeySelectOptions.length > 1"
-          v-model="form.summary.pgpKey"
-          :label="tr('pgpKeyLabel')"
-          required
-          :placeholder="tr('pgpKeyPlaceholder')"
-          :options="pgpKeySelectOptions"
-          class="summary-cert"
-        />
-        <div
-          v-if="pgpKeySelectOptions.length > 1"
-          class="row"
-        >
-          <div class="col column choose-pgp-key q-pa-md">
-            <p class="label">{{ tr('pgpKeyWhichLabel') }}</p>
-            <!-- eslint-disable vue/no-v-html -->
-            <div v-html="tr('pgpKeyWhichExplanation')"></div>
-            <!-- eslint-enable -->
+    <div
+      ref="htmlFormRef"
+      class="col column vdp-form"
+    >
+      <div class="row justify-center">
+        <div class="col column q-col-gutter-md">
+          <div class="text-h5 summary-header">
+            {{ tr('vulnerabilitySummaryTitle') }}
           </div>
-        </div>
-        <div class="text-h5 cvss-header">
-          {{ tr('cvss3ScoreTitle') }}
-        </div>
-        <vdp-cvss
-          v-model="form.cvss"
-          class="summary-cvss"
-          :score-label="tr('cvss3ScoreTitle')"
-          :severity-label="tr('cvss3SeverityLabel')"
-          :attack-vector-label="tr('cvss3AttackVectorLabel')"
-          :user-interaction-label="tr('cvss3UserInteractionLabel')"
-          :attack-complexity-label="tr('cvss3AttackComplexityLabel')"
-          :confidentiality-label="tr('cvss3ConfidentialityLabel')"
-          :privileges-required-label="tr('cvss3PrivilegesRequiredLabel')"
-          :integrity-label="tr('cvss3IntegrityLabel')"
-          :scope-label="tr('cvss3ScopeLabel')"
-          :availability-label="tr('cvss3AvailabilityLabel')"
-          :network-label="tr('cvss3NetworkLabel')"
-          :adjacent-label="tr('cvss3AdjacentLabel')"
-          :local-label="tr('cvss3LocalLabel')"
-          :physical-label="tr('cvss3PhysicalLabel')"
-          :none-label="tr('cvss3NoneLabel')"
-          :low-label="tr('cvss3LowLabel')"
-          :high-label="tr('cvss3HighLabel')"
-          :required-label="tr('cvss3RequiredLabel')"
-          :changed-label="tr('cvss3ChangedLabel')"
-          :unchanged-label="tr('cvss3UnchangedLabel')"
-        />
-        <div class="text-h5 profile-header">
-          <q-icon
-            name="key"
-            :title="tr('encryptedBeforeSubmission')"
+          <vdp-input
+            v-model="form.summary.title"
+            :label="tr('reportTitleLabel')"
+            required
+            :required-label="tr('valueMustNotBeBlank')"
+            :placeholder="tr('reportTitlePlaceholder')"
+            :maxlen-label="rawTr('maxChars')"
+            :maxlen="250"
+            class="summary-title"
           />
-          {{ tr('reporterInformationTitle') }}
-        </div>
-        <div class="row q-col-gutter-md">
-          <div class="col-xs-12 col-sm">
-            <vdp-input
-              v-model="form.profile.name"
-              :label="tr('reporterNameLabel')"
-              :placeholder="tr('reporterNamePlaceholder')"
-              class="profile-name"
-            />
-          </div>
-          <div class="col-xs-12 col-sm">
-            <vdp-input
-              v-model="form.profile.mail"
-              :label="tr('reporterEmailLabel')"
-              :placeholder="tr('reporterEmailPlaceholder')"
-              class="profile-mail"
-            />
-          </div>
-        </div>
-        <vdp-input
-          v-model="form.profile.pgp"
-          textarea
-          :label="tr('reporterPgpKeyLabel')"
-          :placeholder="`-----BEGIN PGP PUBLIC KEY BLOCK-----\n...`"
-          class="profile-pgp"
-        />
-        <div class="text-h5 details-header">
-          <q-icon
-            name="key"
-            :title="tr('encryptedBeforeSubmission')"
+          <vdp-input
+            v-model="form.summary.product"
+            :label="tr('productLabel')"
+            required
+            :required-label="tr('valueMustNotBeBlank')"
+            :placeholder="tr('productPlaceholder')"
+            :maxlen-label="rawTr('maxChars')"
+            :maxlen="250"
+            class="summary-product"
           />
-          {{ tr('technicalDetailsTitle') }}
-        </div>
-        <vdp-input
-          v-model="form.details.endpoint"
-          :label="tr('endpointLabel')"
-          :placeholder="tr('endpointPlaceholder')"
-          required
-          :required-label="tr('valueMustNotBeBlank')"
-          class="details-endpoint"
-        />
-        <div class="row q-col-gutter-md">
-          <div class="col-xs-12 col-sm">
-            <vdp-select
-              v-model="form.details.part"
-              :label="tr('vulnerablePartLabel')"
-              required
-              :required-label="tr('valueMustNotBeBlank')"
-              :placeholder="tr('vulnerablePartPlaceholder')"
-              :options="vulnerablePartOptions"
-              class="details-part"
-            />
-          </div>
-          <div class="col-xs-12 col-sm">
-            <vdp-input
-              v-model="form.details.partName"
-              :label="tr('partNameLabel')"
-              :placeholder="tr('partNamePlaceholder')"
-              :maxlen-label="rawTr('maxChars')"
-              :maxlen="250"
-              required
-              :required-label="tr('valueMustNotBeBlank')"
-              class="details-partname"
-            />
-          </div>
-        </div>
-        <vdp-input
-          v-model="form.details.payload"
-          :label="tr('payloadLabel')"
-          :placeholder="tr('payloadPlaceholder')"
-          required
-          :required-label="tr('valueMustNotBeBlank')"
-          class="details-payload"
-        />
-        <vdp-input
-          v-model="form.details.env"
-          :label="tr('technicalEnvironmentLabel')"
-          :placeholder="tr('technicalEnvironmentPlaceholder')"
-          :maxlen-label="rawTr('maxChars')"
-          :maxlen="250"
-          required
-          :required-label="tr('valueMustNotBeBlank')"
-          class="details-env"
-        />
-        <div class="row">
-          <div class="col column details-report">
-            <vdp-label required>
-              {{ tr('technicalDetailsLabel') }}
-              <!-- eslint-disable vue/no-v-html -->
-              (<span
-                class="hint"
-                v-html="technicalDetailsMarkdownTranslation"
-              />)
-              <!-- eslint-enable -->
-            </vdp-label>
-            <q-tabs
-              v-model="technicalDetailsEditMode"
-              align="left"
-              no-caps
-              dense
-            >
-              <q-tab
-                name="edit"
-                :label="tr('technicalDetailsEdit')"
-              />
-              <q-tab
-                name="preview"
-                :label="tr('technicalDetailsPreview')"
-              />
-            </q-tabs>
-            <q-tab-panels
-              v-model="technicalDetailsEditMode"
-              class="bg-transparent"
-            >
-              <q-tab-panel
-                name="edit"
-                class="q-px-none"
-              >
-                <vdp-input
-                  v-model="form.details.report"
-                  required
-                  :required-label="tr('valueMustNotBeBlank')"
-                  textarea
-                />
-              </q-tab-panel>
-              <q-tab-panel
-                name="preview"
-                class="q-px-none"
-              >
-                <vdp-field error="">
-                  <vdp-markdown
-                    :content="form.details.report"
-                    class="preview-markdown"
-                  />
-                </vdp-field>
-              </q-tab-panel>
-            </q-tab-panels>
-          </div>
-        </div>
-        <div class="row">
+          <vdp-select
+            v-if="pgpKeySelectOptions.length > 1"
+            v-model="form.summary.pgpKey"
+            :label="tr('pgpKeyLabel')"
+            required
+            :placeholder="tr('pgpKeyPlaceholder')"
+            :options="pgpKeySelectOptions"
+            class="summary-cert"
+          />
           <div
-            class="col attachments q-pa-xl"
-            @drop.prevent="loadReportAttachmentsFromDrop"
-            @dragenter.prevent
-            @dragover.prevent
+            v-if="pgpKeySelectOptions.length > 1"
+            class="row"
           >
-            <label class="text-center">
-              {{
-                tr('attachmentsPlaceholder', {
-                  maxSize: humanStorageSize(props.attachmentMaxSizeBytes),
-                  extensions: reportAttachmentExtensionsChoice,
-                })
-              }}
-              <input
-                type="file"
-                :accept="reportAttachmentInputAccept"
-                hidden
-                multiple
-                @change="loadReportAttachmentsFromInput"
-              />
-            </label>
-            <div
-              v-for="[idx, attachment] of form.attachments.entries()"
-              :key="idx"
-              class="row file q-mt-sm"
-            >
-              <span class="col name">{{ attachment.filename }}</span>
-              <span class="col text-right">
-                {{ attachment.strSize }}
-                <q-btn
-                  round
-                  class="delete q-ml-sm q-mb-xs"
-                  icon="clear"
-                  size="xs"
-                  @click="removeReportAttachment(form, idx)"
-                />
-              </span>
+            <div class="col column choose-pgp-key q-pa-md">
+              <p class="label">{{ tr('pgpKeyWhichLabel') }}</p>
+              <!-- eslint-disable vue/no-v-html -->
+              <div v-html="tr('pgpKeyWhichExplanation')"></div>
+              <!-- eslint-enable -->
             </div>
           </div>
-        </div>
-        <div
-          v-if="providedCaptchaData"
-          class="row"
-        >
-          <div class="col">
-            <vdp-captcha
-              ref="captcha"
-              v-model:captcha-value="form.captcha.value"
-              v-model:captcha-url="providedCaptchaData.url"
-              v-model:captcha-width="providedCaptchaData.width"
-              v-model:captcha-height="providedCaptchaData.height"
-              :label="tr('captchaLabel')"
-              :placeholder="tr('captchaPlaceholder')"
-              required
-              :required-label="tr('valueMustNotBeBlank')"
-              class="captcha"
-              @refresh="refreshCaptcha"
+          <div class="text-h5 cvss-header">
+            {{ tr('cvss3ScoreTitle') }}
+          </div>
+          <vdp-cvss
+            v-model="form.cvss"
+            class="summary-cvss"
+            :score-label="tr('cvss3ScoreTitle')"
+            :field-required-label="tr('valueMustNotBeBlank')"
+            :severity-label="tr('cvss3SeverityLabel')"
+            :attack-vector-label="tr('cvss3AttackVectorLabel')"
+            :user-interaction-label="tr('cvss3UserInteractionLabel')"
+            :attack-complexity-label="tr('cvss3AttackComplexityLabel')"
+            :confidentiality-label="tr('cvss3ConfidentialityLabel')"
+            :privileges-required-label="tr('cvss3PrivilegesRequiredLabel')"
+            :integrity-label="tr('cvss3IntegrityLabel')"
+            :scope-label="tr('cvss3ScopeLabel')"
+            :availability-label="tr('cvss3AvailabilityLabel')"
+            :network-label="tr('cvss3NetworkLabel')"
+            :adjacent-label="tr('cvss3AdjacentLabel')"
+            :local-label="tr('cvss3LocalLabel')"
+            :physical-label="tr('cvss3PhysicalLabel')"
+            :none-label="tr('cvss3NoneLabel')"
+            :low-label="tr('cvss3LowLabel')"
+            :high-label="tr('cvss3HighLabel')"
+            :required-label="tr('cvss3RequiredLabel')"
+            :changed-label="tr('cvss3ChangedLabel')"
+            :unchanged-label="tr('cvss3UnchangedLabel')"
+          />
+          <div class="text-h5 profile-header">
+            <q-icon
+              name="key"
+              :title="tr('encryptedBeforeSubmission')"
+            />
+            {{ tr('reporterInformationTitle') }}
+          </div>
+          <div class="row q-col-gutter-md">
+            <div class="col-xs-12 col-sm">
+              <vdp-input
+                v-model="form.profile.name"
+                :label="tr('reporterNameLabel')"
+                :placeholder="tr('reporterNamePlaceholder')"
+                class="profile-name"
+              />
+            </div>
+            <div class="col-xs-12 col-sm">
+              <vdp-input
+                v-model="form.profile.mail"
+                :label="tr('reporterEmailLabel')"
+                :placeholder="tr('reporterEmailPlaceholder')"
+                class="profile-mail"
+              />
+            </div>
+          </div>
+          <vdp-input
+            v-model="form.profile.pgp"
+            textarea
+            :label="tr('reporterPgpKeyLabel')"
+            :placeholder="`-----BEGIN PGP PUBLIC KEY BLOCK-----\n...`"
+            class="profile-pgp"
+          />
+          <div class="text-h5 details-header">
+            <q-icon
+              name="key"
+              :title="tr('encryptedBeforeSubmission')"
+            />
+            {{ tr('technicalDetailsTitle') }}
+          </div>
+          <vdp-input
+            v-model="form.details.endpoint"
+            :label="tr('endpointLabel')"
+            :placeholder="tr('endpointPlaceholder')"
+            required
+            :required-label="tr('valueMustNotBeBlank')"
+            class="details-endpoint"
+          />
+          <div class="row q-col-gutter-md">
+            <div class="col-xs-12 col-sm">
+              <vdp-select
+                v-model="form.details.part"
+                :label="tr('vulnerablePartLabel')"
+                required
+                :required-label="tr('valueMustNotBeBlank')"
+                :placeholder="tr('vulnerablePartPlaceholder')"
+                :options="vulnerablePartOptions"
+                class="details-part"
+              />
+            </div>
+            <div class="col-xs-12 col-sm">
+              <vdp-input
+                v-model="form.details.partName"
+                :label="tr('partNameLabel')"
+                :placeholder="tr('partNamePlaceholder')"
+                :maxlen-label="rawTr('maxChars')"
+                :maxlen="250"
+                required
+                :required-label="tr('valueMustNotBeBlank')"
+                class="details-partname"
+              />
+            </div>
+          </div>
+          <vdp-input
+            v-model="form.details.payload"
+            :label="tr('payloadLabel')"
+            :placeholder="tr('payloadPlaceholder')"
+            required
+            :required-label="tr('valueMustNotBeBlank')"
+            class="details-payload"
+          />
+          <vdp-input
+            v-model="form.details.env"
+            :label="tr('technicalEnvironmentLabel')"
+            :placeholder="tr('technicalEnvironmentPlaceholder')"
+            :maxlen-label="rawTr('maxChars')"
+            :maxlen="250"
+            required
+            :required-label="tr('valueMustNotBeBlank')"
+            class="details-env"
+          />
+          <div class="row">
+            <div class="col column details-report">
+              <vdp-label required>
+                {{ tr('technicalDetailsLabel') }}
+                <!-- eslint-disable vue/no-v-html -->
+                (<span
+                  class="hint"
+                  v-html="technicalDetailsMarkdownTranslation"
+                />)
+                <!-- eslint-enable -->
+              </vdp-label>
+              <q-tabs
+                v-model="technicalDetailsEditMode"
+                align="left"
+                no-caps
+                dense
+              >
+                <q-tab
+                  name="edit"
+                  :label="tr('technicalDetailsEdit')"
+                />
+                <q-tab
+                  name="preview"
+                  :label="tr('technicalDetailsPreview')"
+                />
+              </q-tabs>
+              <q-tab-panels
+                v-model="technicalDetailsEditMode"
+                class="bg-transparent"
+              >
+                <q-tab-panel
+                  name="edit"
+                  class="q-px-none"
+                >
+                  <vdp-input
+                    v-model="form.details.report"
+                    required
+                    :required-label="tr('valueMustNotBeBlank')"
+                    textarea
+                  />
+                </q-tab-panel>
+                <q-tab-panel
+                  name="preview"
+                  class="q-px-none"
+                >
+                  <q-field outlined>
+                    <template #control>
+                      <vdp-markdown
+                        :content="form.details.report"
+                        class="preview-markdown self-center full-width no-outline"
+                      />
+                    </template>
+                  </q-field>
+                </q-tab-panel>
+              </q-tab-panels>
+            </div>
+          </div>
+          <div class="row">
+            <div
+              class="col attachments q-pa-xl"
+              @drop.prevent="loadReportAttachmentsFromDrop"
+              @dragenter.prevent
+              @dragover.prevent
+            >
+              <label class="text-center">
+                {{
+                  tr('attachmentsPlaceholder', {
+                    maxSize: humanStorageSize(props.attachmentMaxSizeBytes),
+                    extensions: reportAttachmentExtensionsChoice,
+                  })
+                }}
+                <input
+                  type="file"
+                  :accept="reportAttachmentInputAccept"
+                  hidden
+                  multiple
+                  @change="loadReportAttachmentsFromInput"
+                />
+              </label>
+              <div
+                v-for="[idx, attachment] of form.attachments.entries()"
+                :key="idx"
+                class="row file q-mt-sm"
+              >
+                <span class="col name">{{ attachment.filename }}</span>
+                <span class="col text-right">
+                  {{ attachment.strSize }}
+                  <q-btn
+                    round
+                    class="delete q-ml-sm q-mb-xs"
+                    icon="clear"
+                    size="xs"
+                    @click="removeReportAttachment(form, idx)"
+                  />
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            v-if="providedCaptchaData"
+            class="row"
+          >
+            <div class="col">
+              <vdp-captcha
+                ref="captcha"
+                v-model:captcha-value="form.captcha.value"
+                v-model:captcha-url="providedCaptchaData.url"
+                v-model:captcha-width="providedCaptchaData.width"
+                v-model:captcha-height="providedCaptchaData.height"
+                :label="tr('captchaLabel')"
+                :placeholder="tr('captchaPlaceholder')"
+                required
+                :required-label="tr('valueMustNotBeBlank')"
+                class="captcha"
+                @refresh="refreshCaptcha"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <q-checkbox
+                v-model="form.policyAccepted"
+                dense
+                class="checkbox policy"
+                @vnode-updated="onPolicyNodeUpdated"
+              >
+                <!-- eslint-disable vue/no-v-html -->
+                <span v-html="disclosurePolicyCheckboxTranslation" />
+                <!-- eslint-enable -->
+              </q-checkbox>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <q-checkbox
+                v-model="form.intellectualPropertyAccepted"
+                dense
+                class="checkbox intellectual-property"
+              >
+                {{ tr('intellectualPropertyCheckbox') }}
+              </q-checkbox>
+            </div>
+          </div>
+          <div class="row justify-center">
+            <q-btn
+              :label="tr('sendReportLabel')"
+              color="primary"
+              :disabled="submitting"
+              @click="submit"
             />
           </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <q-checkbox
-              v-model="form.policyAccepted"
-              dense
-              class="checkbox policy"
-              @vnode-updated="onPolicyNodeUpdated"
-            >
-              <!-- eslint-disable vue/no-v-html -->
-              <span v-html="disclosurePolicyCheckboxTranslation" />
-              <!-- eslint-enable -->
-            </q-checkbox>
+          <div class="row">
+            <vdp-submission-logs :logs="submissionLogs" />
           </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <q-checkbox
-              v-model="form.intellectualPropertyAccepted"
-              dense
-              class="checkbox intellectual-property"
-            >
-              {{ tr('intellectualPropertyCheckbox') }}
-            </q-checkbox>
-          </div>
-        </div>
-        <div class="row justify-center">
-          <q-btn
-            :label="tr('sendReportLabel')"
-            color="primary"
-            :disabled="submitting"
-            @click="submit"
-          />
-        </div>
-        <div class="row">
-          <vdp-submission-logs :logs="submissionLogs" />
         </div>
       </div>
     </div>
-  </div>
+  </q-form>
 </template>
 
 <script lang="ts" setup>
 import { computed, onMounted, reactive, ref, unref, toRaw, watch } from 'vue';
-import { useQuasar, format, QNotifyCreateOptions } from 'quasar';
+import { useQuasar, format, QNotifyCreateOptions, QForm } from 'quasar';
 import JSZip from 'jszip';
 import cvss from 'cvss';
 import { Attachment, CvssMeta, ReportData, Submission, SubmissionLog } from './types';
@@ -340,7 +349,6 @@ import { renderTemplate } from '../utils';
 import { rawTr, tr } from './i18n/tr';
 import VdpCaptcha from './VdpCaptcha.vue';
 import VdpCvss from './VdpCvss.vue';
-import VdpField from './VdpField.vue';
 import VdpInput from './VdpInput.vue';
 import VdpLabel from './VdpLabel.vue';
 import VdpMarkdown from './VdpMarkdown.vue';
@@ -388,7 +396,45 @@ const emit = defineEmits<{
 
 let providedCaptchaData = ref<CaptchaData | null>(null);
 
-const form = reactive<ReportData>({
+const initialForm = {
+  policyAccepted: false,
+  intellectualPropertyAccepted: false,
+  captcha: {
+    value: '',
+  },
+  summary: {
+    title: '',
+    pgpKey: '',
+    product: '',
+  },
+  profile: {
+    name: '',
+    mail: '',
+    pgp: '',
+  },
+  details: {
+    endpoint: '',
+    part: '',
+    partName: '',
+    payload: '',
+    env: '',
+    report: '',
+  },
+  attachments: [] as Attachment[],
+  cvss: {
+    AV: '',
+    AC: '',
+    PR: '',
+    S: '',
+    A: '',
+    I: '',
+    C: '',
+    UI: '',
+  },
+} as ReportData;
+const form = reactive(initialForm);
+/*
+Object.assign(form, {
   policyAccepted: true,
   intellectualPropertyAccepted: true,
   captcha: {
@@ -442,44 +488,7 @@ const form = reactive<ReportData>({
     C: 'H',
     UI: 'N',
   },
-});
-/*
-const form = reactive<ReportData>({
-  policyAccepted: false,
-  intellectualPropertyAccepted: false,
-  captcha: {
-    value: '',
-  },
-  summary: {
-    title: '',
-    pgpKey: '',
-    product: '',
-  },
-  profile: {
-    name: '',
-    mail: '',
-    pgp: '',
-  },
-  details: {
-    endpoint: '',
-    part: '',
-    partName: '',
-    payload: '',
-    env: '',
-    report: '',
-  },
-  attachments: [] as Attachment[],
-  cvss: {
-    AV: '',
-    AC: '',
-    PR: '',
-    S: '',
-    A: '',
-    I: '',
-    C: '',
-    UI: '',
-  },
-});
+} as ReportData);
 */
 const pgpKeySelectOptions = computed(() => props.pgpKeys.map((pgpKey) => ({ label: pgpKey.name, value: pgpKey.name })));
 
@@ -495,7 +504,7 @@ const vulnerablePartOptions = ref(
   }))
 );
 
-const formRef = ref<HTMLElement>();
+const htmlFormRef = ref<HTMLElement>();
 
 const technicalDetailsEditMode = ref('edit');
 const technicalDetailsMarkdownTranslation = computed(() =>
@@ -514,7 +523,7 @@ const disclosurePolicyCheckboxTranslation = computed(() =>
   })
 );
 const setOpenPolicyLinkEventListeners = () =>
-  Array.from(unref(formRef)?.getElementsByClassName(openPolicyLinkClass) ?? []).forEach((e) => {
+  Array.from(unref(htmlFormRef)?.getElementsByClassName(openPolicyLinkClass) ?? []).forEach((e) => {
     e.removeEventListener('click', openPolicyClickHandler);
     e.addEventListener('click', openPolicyClickHandler, true);
     e.removeEventListener('keydown', openPolicyKeydownHandler);
@@ -717,15 +726,21 @@ async function logReportData(zipBlob: Blob, pgpMessage: string) {
   });
 }
 
+const vdpForm = ref<QForm>();
 const submitting = ref(false);
 async function submit() {
   submitting.value = true;
+  vdpForm.value?.resetValidation();
   resetSubmissionLogs();
-  return Promise.resolve(
-    getRequiredFieldsErrors(tr, form, {
-      noCaptcha: !providedCaptchaData.value,
-    })
-  )
+  return vdpForm.value
+    ?.validate()
+    .then((validated) =>
+      validated
+        ? getRequiredFieldsErrors(tr, form, {
+            noCaptcha: !providedCaptchaData.value,
+          })
+        : Promise.reject('')
+    )
     .then((errors) => {
       if (errors.length > 0) {
         return Promise.reject(`<b>${tr('formErrorsTitle')}:</b><br/>- ${errors.join('<br/>- ')}`);
@@ -789,12 +804,14 @@ async function submit() {
       });
     })
     .catch((error) => {
-      updateLastSubmissionLog({
-        message: tr('unexpectedError', {
-          message: error as string,
-        }),
-      });
-      notifyError(error as string);
+      if (error) {
+        updateLastSubmissionLog({
+          message: tr('unexpectedError', {
+            message: error as string,
+          }),
+        });
+        notifyError(error as string);
+      }
     })
     .finally(() => {
       void refreshCaptcha();

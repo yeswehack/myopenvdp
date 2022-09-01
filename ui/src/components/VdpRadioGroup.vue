@@ -1,34 +1,42 @@
 <template>
-  <div>
-    <vdp-label
-      :label="label"
-      :hint="hint"
-      required
-    />
-    <div class="radio-group">
-      <template
-        v-for="choice of choices"
-        :key="choice.label"
-      >
-        <input
-          :id="`${uid}-${choice.label}`"
-          v-model="model"
-          :value="choice.value"
-          type="radio"
-        />
-        <label
-          :for="`${uid}-${choice.label}`"
-          tabindex="0"
-          @keydown="(evt) => onKeydown(evt, `${uid}-${choice.label}`)"
-          >{{ choice.label }} ({{ choice.value }})</label
+  <q-field
+    ref="field"
+    borderless
+    lazy-rules
+    :rules="rules"
+  >
+    <div>
+      <vdp-label
+        :label="label"
+        :hint="hint"
+        required
+      />
+      <div class="radio-group">
+        <template
+          v-for="choice of choices"
+          :key="choice.label"
         >
-      </template>
+          <input
+            :id="`${uid}-${choice.label}`"
+            v-model="model"
+            :value="choice.value"
+            type="radio"
+          />
+          <label
+            :for="`${uid}-${choice.label}`"
+            tabindex="0"
+            @keydown="(evt) => onKeydown(evt, `${uid}-${choice.label}`)"
+            >{{ choice.label }} ({{ choice.value }})</label
+          >
+        </template>
+      </div>
     </div>
-  </div>
+  </q-field>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted, computed } from 'vue';
+import { QField } from 'quasar';
 import { randomId } from '../utils';
 import VdpLabel from './VdpLabel.vue';
 
@@ -38,6 +46,8 @@ type RadioOption<T = unknown> = {
 };
 
 interface Props {
+  required?: boolean;
+  requiredLabel?: string;
   label?: string;
   hint?: string;
   choices?: RadioOption[];
@@ -45,6 +55,8 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  required: false,
+  requiredLabel: 'This value should not be blank.',
   label: '',
   hint: '',
   choices: () => [],
@@ -52,8 +64,13 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits(['update:model-value']);
-
 const uid = ref('');
+const field = ref<QField>();
+defineExpose({
+  validate: () => field.value?.validate(),
+  resetValidation: () => field.value?.resetValidation(),
+});
+
 const model = computed({
   get() {
     return props.modelValue;
@@ -62,6 +79,7 @@ const model = computed({
     emit('update:model-value', v);
   },
 });
+const rules = [() => !props.required || !!model.value || props.requiredLabel];
 
 function onKeydown(evt: KeyboardEvent, targetId: string) {
   if (evt.code == 'Enter' || evt.code == 'Space') {
