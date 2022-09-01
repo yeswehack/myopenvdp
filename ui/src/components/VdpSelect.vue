@@ -1,6 +1,7 @@
 <template>
   <div>
     <q-select
+      ref="select"
       v-model="model"
       :options="options"
       v-bind="$attrs"
@@ -30,7 +31,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import { QSelect, useFormChild } from 'quasar';
 
 export type SelectOption<T = unknown> = {
   label: string;
@@ -76,6 +78,12 @@ const model = computed({
 const displayValue = computed(() => options.value.find((v) => v.value == model.value)?.label);
 
 const rules = [(value: unknown) => !props.required || !!value || props.requiredLabel];
+
+const select = ref<QSelect>();
+useFormChild({
+  validate: () => Promise.resolve(model.value != '').then(() => select.value?.validate() || false),
+  resetValidation: () => select.value?.resetValidation(),
+});
 </script>
 
 <style lang="scss" scoped>

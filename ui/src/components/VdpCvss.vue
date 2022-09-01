@@ -1,37 +1,50 @@
 <template>
-  <div class="vdp-cvss">
-    <div class="grid">
-      <div class="radio-groups q-gutter-md">
-        <vdp-radio-group
-          v-for="(def, name) in CVSSDefinition"
-          :key="def.label"
-          v-model="model[name]"
-          v-bind="$attrs"
-          :hint="name"
-          :label="def.label"
-          required
-          :choices="def.choices"
+  <q-field
+    borderless
+    hide-bottom-space
+  >
+    <div class="vdp-cvss">
+      <div class="grid">
+        <div class="radio-groups q-gutter-md">
+          <vdp-radio-group
+            v-for="(def, name) in CVSSDefinition"
+            :ref="
+              (radioGroup) => {
+                radioGroups[name] = radioGroup;
+              }
+            "
+            :key="def.label"
+            v-model="model[name]"
+            v-bind="$attrs"
+            :hint="name"
+            :label="def.label"
+            required
+            :required-label="fieldRequiredLabel"
+            :choices="def.choices"
+          />
+        </div>
+        <vdp-cvss-result
+          :score-label="scoreLabel"
+          :score="score"
+          :severity-label="severityLabel"
+          :severity="severity"
+          class="result"
         />
       </div>
-      <vdp-cvss-result
-        :score-label="scoreLabel"
-        :score="score"
-        :severity-label="severityLabel"
-        :severity="severity"
-        class="result"
-      />
     </div>
-  </div>
+  </q-field>
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import { useFormChild } from 'quasar';
 import VdpCvssResult from './VdpCvssResult.vue';
 import VdpRadioGroup from './VdpRadioGroup.vue';
 import cvss from 'cvss';
 
 interface Props {
   modelValue: Record<string, string>;
+  fieldRequiredLabel?: string;
   scoreLabel?: string;
   severityLabel?: string;
   attackVectorLabel?: string;
@@ -56,6 +69,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   scoreLabel: undefined,
+  fieldRequiredLabel: undefined,
   severityLabel: undefined,
   attackVectorLabel: 'Attack Vector',
   userInteractionLabel: 'User Interaction',
@@ -84,6 +98,19 @@ const model = computed({
   set(v: Record<string, string>) {
     emit('update:modelValue', v);
   },
+});
+
+type VdpRadioGroupInstanceType = InstanceType<typeof VdpRadioGroup>;
+const radioGroups = ref<{ [key: string]: VdpRadioGroupInstanceType }>({});
+useFormChild({
+  validate: () =>
+    Promise.resolve(
+      Object.values(radioGroups.value)
+        .map((radioGroup) => (radioGroup.validate() as boolean | Promise<boolean> | undefined) || false)
+        .every((validated) => validated)
+    ),
+  resetValidation: () =>
+    Object.values(radioGroups.value).forEach((radioGroup) => radioGroup.resetValidation() as void | undefined),
 });
 
 const CVSSDefinition = computed(() => ({
@@ -224,6 +251,7 @@ const severity = computed(() => cvss.getRating(score.value));
 <style lang="scss" scoped>
 @import 'quasar/src/css/variables.sass';
 .vdp-cvss {
+  width: 100%;
   display: flex;
   flex-direction: column;
   .grid {
