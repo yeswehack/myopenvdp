@@ -64,13 +64,14 @@ services:
     image: node:14
     working_dir: /backend
     volumes:
-    - ./ui/dev-backend/cert:/backend/cert
+    - ./ui/dev-backend/index.html:/backend/index.html
     - ./ui/dev-backend/reports:/backend/reports
     - ./ui/dev-backend/src:/backend/src
     - ./ui/dev-backend/package.json:/backend/package.json
     - ./ui/dev-backend/tsconfig.json:/backend/tsconfig.json
+    - ./ui/dev-backend/vite.config.ts:/backend/vite.config.ts
     - ./ui/dev-backend/yarn.lock:/backend/yarn.lock
-    command: sh -c 'yarn install && yarn build && yarn start --host --port=8082'
+    command: sh -c 'yarn && yarn dev --host --port=8082'
     networks:
     - vdp-form
     labels:
