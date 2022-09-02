@@ -1,7 +1,7 @@
 import Jimp from 'jimp';
 
 class Captcha {
-  #value: string = '';
+  #value = '';
   #width: number;
   #height: number;
   #image?: Jimp;
@@ -78,7 +78,7 @@ class Captcha {
   }
 }
 
-const makeIteratorThatFillsWithColor = (image: Jimp, color: number) => (x: number, y: number, offset: number) =>
+const makeIteratorThatFillsWithColor = (image: Jimp, color: number) => (_x: number, _y: number, offset: number) =>
   image.bitmap.data.writeUInt32BE(color, offset);
 
 const scanCircle = (

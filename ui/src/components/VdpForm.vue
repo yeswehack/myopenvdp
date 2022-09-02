@@ -433,7 +433,7 @@ const initialForm = {
   },
 } as ReportData;
 const form = reactive(initialForm);
-/*
+
 Object.assign(form, {
   policyAccepted: true,
   intellectualPropertyAccepted: true,
@@ -489,7 +489,7 @@ Object.assign(form, {
     UI: 'N',
   },
 } as ReportData);
-*/
+
 const pgpKeySelectOptions = computed(() => props.pgpKeys.map((pgpKey) => ({ label: pgpKey.name, value: pgpKey.name })));
 
 const computedCvss = computed<CvssMeta>(() => ({

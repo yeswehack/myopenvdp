@@ -1,39 +1,41 @@
-import http from 'http';
 import express from 'express';
-import args from 'args';
 import formidable from 'formidable';
 import Captcha from './captcha';
 import { encryptString, decryptString } from 'encrypt-string';
 
 import { join, resolve } from 'path';
 import { writeFileSync as fsWriteFile, readFileSync as fsReadFile, readdirSync as fsReadDir } from 'fs';
-import { networkInterfaces } from 'os';
 
-const reportsDir = resolve(__dirname, '..', 'reports');
-
-args.option('host', 'Expose to host', false).option('port', 'Server port', 8082);
-
-const flags = args.parse(process.argv);
+const reportsDir = resolve('reports');
 
 const app = express();
-const hostname = flags.host ? '0.0.0.0' : '127.0.0.1';
-const port = flags.port as number;
-const captchaCryptPassword = 'P4$sw0Rd!';
+export const handler = app;
 
-// Handling GET / requests
-app.get('/', (request, response) => {
-  response.send('Dev backend!');
-});
+const captchaCryptPassword = 'P4$sw0Rd!';
 
 // Handling GET /reports requests
 // renders an HTML page with listing of saved reports
-app.get('/reports', (request, response) => {
+type Report = {
+  title: string;
+  product: string;
+  cvss_score: number;
+  cvss: {
+    AV: string;
+    AC: string;
+    PR: string;
+    S: string;
+    A: string;
+    I: string;
+    C: string;
+    UI: string;
+  };
+};
+app.get('/reports', (_request, response) => {
   const reports = fsReadDir(reportsDir)
     .filter((fileName) => fileName.endsWith('.json'))
     .map((fileName) => join(reportsDir, fileName))
     .map((reportPath) => fsReadFile(reportPath))
-    .map((rawData) => JSON.parse(rawData.toString('utf8')))
-    .map((data) => data.report)
+    .map((rawData) => JSON.parse(rawData.toString('utf8')) as Report)
     .map(
       (report) => `
     <li>${report.title}
@@ -73,42 +75,42 @@ app.get('/reports', (request, response) => {
 });
 
 // Handling GET /api/captcha requests
-app.get('/api/captcha', async (request, response) => {
-  response.writeHead(200, {
-    'Access-Control-Allow-Origin': '*',
-  });
-  const captcha = new Captcha(
-    request.query.w ? Number.parseInt(request.query.w as string) : 200,
-    request.query.h ? Number.parseInt(request.query.h as string) : 56
-  );
-  const key = await encryptString(captcha.getValue(), captchaCryptPassword);
-  response.write(
-    JSON.stringify({
-      key: key,
-      url: await captcha.getDataURL(),
-      width: captcha.getWidth(),
-      height: captcha.getHeight(),
-    })
-  );
-  response.end();
-});
+app.get(
+  '/api/captcha',
+  (request, response) =>
+    void (async () => {
+      response.writeHead(200, {
+        'Access-Control-Allow-Origin': '*',
+      });
+      const captcha = new Captcha(
+        request.query.w ? Number.parseInt(request.query.w as string) : 200,
+        request.query.h ? Number.parseInt(request.query.h as string) : 56
+      );
+      const key = await encryptString(captcha.getValue(), captchaCryptPassword);
+      response.write(
+        JSON.stringify({
+          key: key,
+          url: await captcha.getDataURL(),
+          width: captcha.getWidth(),
+          height: captcha.getHeight(),
+        })
+      );
+      response.end();
+    })()
+);
 
 // Handles POST /api/upload requests
-app.options('/api/upload', (request, response) => {
+app.options('/api/upload', (_request, response) => {
   response.writeHead(200, {
     'Access-Control-Allow-Origin': '*',
   });
   response.end();
 });
-const getUploadParseRequestCallback = (useCaptcha: boolean) =>
-  async (
-    response: express.Response,
-    err: any,
-    fields: formidable.Fields,
-    files: formidable.Files,
-  ) => {
+const getUploadParseRequestCallback =
+  (useCaptcha: boolean) =>
+  async (response: express.Response, err: unknown, fields: formidable.Fields, files: formidable.Files) => {
     if (err) {
-      response.writeHead(err.httpCode || 400, { 'Content-Type': 'text/plain' });
+      response.writeHead(400, { 'Content-Type': 'text/plain' });
       response.end(String(err));
       return;
     }
@@ -120,7 +122,7 @@ const getUploadParseRequestCallback = (useCaptcha: boolean) =>
           decryptedCaptcha = await decryptString(captcha.key, captchaCryptPassword);
         } catch (e) {
           response.writeHead(401, { 'Content-Type': 'text/plain' });
-          response.end(`Captcha error (${e})!`);
+          response.end(`Captcha error (${e as string})!`);
           return;
         }
         if (decryptedCaptcha.toLowerCase() != captcha.value.toLowerCase()) {
@@ -128,8 +130,7 @@ const getUploadParseRequestCallback = (useCaptcha: boolean) =>
           response.end('Captcha error!');
           return;
         }
-      }
-      else {
+      } else {
         response.writeHead(401, { 'Content-Type': 'text/plain' });
         response.end('Captcha error (not provided)!');
         return;
@@ -161,33 +162,15 @@ app.post('/api/upload/captcha', (request, response) => {
   const form = formidable({ multiples: true });
   response.setHeader('Access-Control-Allow-Origin', '*');
 
-  form.parse(request, async (err, fields, files) => {
-    await uploadParseRequestCaptchaCallback(response, err, fields, files);
+  form.parse(request, (err, fields, files) => {
+    void uploadParseRequestCaptchaCallback(response, err, fields, files);
   });
 });
 app.post('/api/upload', (request, response) => {
   const form = formidable({ multiples: true });
   response.setHeader('Access-Control-Allow-Origin', '*');
 
-  form.parse(request, async (err, fields, files) => {
-    await uploadParseRequestNoCaptchaCallback(response, err, fields, files);
+  form.parse(request, (err, fields, files) => {
+    void uploadParseRequestNoCaptchaCallback(response, err, fields, files);
   });
-});
-
-// Server setup
-http.createServer(app).listen(port, hostname, () => {
-  const ips = flags.host
-    ? Object.values(networkInterfaces()).reduce(
-        (items, interfacesInfo) =>
-          items.concat(
-            (interfacesInfo || [])
-              .filter(
-                (interfaceInfo) => interfaceInfo.family == 'IPv4' && !interfaceInfo.internal && interfaceInfo.address
-              )
-              .map((interfaceInfo) => interfaceInfo.address)
-          ),
-        new Array()
-      )
-    : [hostname];
-  ips.forEach((host) => console.log(`The application is listening on http://${host}:${port}`));
 });
