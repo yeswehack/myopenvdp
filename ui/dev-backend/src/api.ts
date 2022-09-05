@@ -33,13 +33,15 @@ type Report = {
 app.get('/reports', (_request, response) => {
   const reports = fsReadDir(reportsDir)
     .filter((fileName) => fileName.endsWith('.json'))
-    .map((fileName) => join(reportsDir, fileName))
-    .map((reportPath) => fsReadFile(reportPath))
-    .map((rawData) => JSON.parse(rawData.toString('utf8')) as Report)
+    .reverse()
+    .map((fileName) => ({ fileName, path: join(reportsDir, fileName) }))
+    .map(({ fileName, path }) => ({ fileName, data: fsReadFile(path) }))
+    .map(({ fileName, data }) => ({ fileName, report: JSON.parse(data.toString('utf8')) as Report }))
     .map(
-      (report) => `
+      ({ fileName, report }) => `
     <li>${report.title}
     <ul>
+      <li>Filename: ${fileName}</li>
       <li>Product: ${report.product}</li>
       <li>CVSS: <span>${report.cvss_score}</span>
         <table border="1">
