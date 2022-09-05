@@ -374,6 +374,7 @@ interface Props {
   attachmentMaxSizeBytes?: number;
   attachmentAllowedExtensions?: string[];
   notificationsPosition?: NotifyPosition;
+  successNotificationPosition?: NotifyPosition;
   errorsNotificationPosition?: NotifyPosition;
   disclosurePolicyNotificationPosition?: NotifyPosition;
   captchaProvider?: () => Promise<CaptchaData>;
@@ -383,6 +384,7 @@ const props = withDefaults(defineProps<Props>(), {
   attachmentMaxSizeBytes: 2 * 1024 * 1024,
   attachmentAllowedExtensions: () => defaultAllowedFileExtensions,
   notificationsPosition: 'top',
+  successNotificationPosition: undefined,
   errorsNotificationPosition: undefined,
   disclosurePolicyNotificationPosition: undefined,
   captchaProvider: undefined,
@@ -694,7 +696,7 @@ async function sendReport(zipBlob: Blob, pgpMessage: string) {
     emit(
       'submit',
       submission,
-      () => resolve(true),
+      (message?: string) => resolve(message || ''),
       (message?: string) => reject(message || '')
     );
   });
@@ -739,7 +741,7 @@ async function submit() {
         ? getRequiredFieldsErrors(tr, form, {
             noCaptcha: !providedCaptchaData.value,
           })
-        : Promise.reject('')
+        : Promise.reject(tr('formInvalidMessage'))
     )
     .then((errors) => {
       if (errors.length > 0) {
@@ -788,20 +790,25 @@ async function submit() {
         icon: 'send',
         title: tr('submissionSendingReportLabel'),
       });
-      await sendReport(zip, message);
-      return { zip, message };
+      const successMessage = await sendReport(zip, message);
+      return { zip, message, successMessage };
     })
-    .then(async ({ zip, message }) => {
+    .then(async ({ zip, message, successMessage }) => {
       updateLastSubmissionLog({
         message: tr('submissionSendingReportSuccess'),
       });
       await logReportData(zip, message);
+      return { successMessage };
     })
-    .then(() => {
+    .then(({ successMessage }) => {
       addSubmissionLog({
         icon: 'celebration',
         title: tr('submissionReportSentLabel'),
       });
+      return { successMessage };
+    })
+    .then(({ successMessage }) => {
+      notifySuccess(successMessage);
     })
     .catch((error) => {
       if (error) {
@@ -819,6 +826,20 @@ async function submit() {
     });
 }
 
+function notifySuccess(message: string) {
+  $q.notify({
+    type: 'positive',
+    group: 'notifications',
+    position: props.successNotificationPosition || props.notificationsPosition,
+    timeout: 6000,
+    html: true,
+    message,
+    actions: [
+      { label: tr('notificationDismissLabel'), color: 'white', handler: () => void 0, }
+    ],
+  });
+}
+
 function notifyError(message: string) {
   $q.notify({
     type: 'negative',
@@ -827,6 +848,9 @@ function notifyError(message: string) {
     timeout: 6000,
     html: true,
     message,
+    actions: [
+      { label: tr('notificationDismissLabel'), color: 'white', handler: () => void 0, }
+    ],
   });
 }
 

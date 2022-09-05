@@ -66,7 +66,9 @@ export type VdpFormTranslation = {
   sendReportLabel: string;
   maxChars: string;
   valueMustNotBeBlank: string;
+  notificationDismissLabel: string;
   formErrorsTitle: string;
+  formInvalidMessage: string;
   errorFieldIsEmpty: string;
   errorFieldIsNotAccepted: string;
   errorCvssAreNotFilled: string;
