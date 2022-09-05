@@ -9,6 +9,7 @@
       :attachment-max-size-bytes="4 * 1024 * 1024"
       :attachment-allowed-extensions="extensions"
       disclosure-policy-notification-position="bottom-left"
+      success-notification-position="top-right"
       errors-notification-position="top-right"
       @submit="logSubmit"
     />
@@ -118,7 +119,7 @@ function logSubmit(
     captcha: unknown;
     report: unknown;
   },
-  success: () => void,
+  success: (message?: string) => void,
   failure: (message?: string) => void
 ) {
   const body = new FormData();
@@ -134,7 +135,7 @@ function logSubmit(
         throw await response.text();
       }
     })
-    .then(() => success())
+    .then(() => success('Thanks for your report submission!'))
     .catch((reason) => failure(reason as string));
 }
 </script>
