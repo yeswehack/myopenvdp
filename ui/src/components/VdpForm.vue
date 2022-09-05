@@ -692,12 +692,12 @@ async function sendReport(zipBlob: Blob, pgpMessage: string) {
       digest_hex: zipBlobPlainHash,
     },
   };
-  return new Promise((resolve, reject) => {
+  return new Promise<string>((resolve, reject) => {
     emit(
       'submit',
       submission,
-      (message?: string) => resolve(message || ''),
-      (message?: string) => reject(message || '')
+      (message?: string) => resolve(typeof message == 'string' && message ? message : tr('submissionReportSentLabel')),
+      (message?: string) => reject(typeof message == 'string' && message ? message : tr('unexpectedError', { message: '[no message]'}))
     );
   });
 }
