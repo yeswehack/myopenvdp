@@ -71,6 +71,13 @@
       "category": "behavior"
     },
 
+    "success-notification-position": {
+      "type": "String",
+      "desc": "Position for success notification. Inherits from 'notifications-position' if not set",
+      "values": ["top-left", "top-right", "bottom-left", "bottom-right", "top", "bottom", "left", "right", "center"],
+      "category": "behavior"
+    },
+
     "errors-notification-position": {
       "type": "String",
       "desc": "Position for errors notification. Inherits from 'notifications-position' if not set",
@@ -188,7 +195,13 @@
         },
         "success": {
           "type": "Function",
-          "desc": "A callback to call if the report has been handled successfully"
+          "desc": "A callback to call if the report has been handled successfully",
+          "params": {
+            "message": {
+              "type": "String",
+              "desc": "The success message"
+            }
+          }
         },
         "failure": {
           "type": "Function",
