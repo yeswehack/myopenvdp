@@ -63,6 +63,22 @@
       "category": "behavior"
     },
 
+    "logs-auto-scroll": {
+      "type": "Boolean",
+      "desc": "Automatically scroll to submission logs when a report is submitted",
+      "default": "true",
+      "values": ["true", "false"],
+      "category": "behavior"
+    },
+
+    "logs-timestamp-format": {
+      "type": "String",
+      "desc": "Format of the timestamps for submission logs. See https://github.com/felixge/node-dateformat#mask-options.",
+      "default": "yyyy/mm/dd HH:MM:ss.l",
+      "category": "style",
+      "examples": ["isoDateTime", "UTC:h:MM:ss TT Z"]
+    },
+
     "notifications-position": {
       "type": "String",
       "desc": "Default position for notifications",

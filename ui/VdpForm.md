@@ -37,6 +37,16 @@
   - **Default value**: `['jpg', 'jpeg', 'png', 'txt']`
   - **Example**:
     - `['txt', 'png', 'jpg']`
+- **`logs-auto-scroll`** (Boolean)
+  - **Description**: Automatically scroll to submission logs when a report is submitted
+  - **Accepted values**: `true` | `false`
+  - **Default value**: `true`
+- **`logs-timestamp-format`** (String)
+  - **Description**: Format of the timestamps for submission logs. See https://github.com/felixge/node-dateformat#mask-options.
+  - **Default value**: `yyyy/mm/dd HH:MM:ss.l`
+  - **Examples**:
+    - `isoDateTime`
+    - `UTC:h:MM:ss TT Z`
 - **`notifications-position`** (String)
   - **Description**: Default position for notifications
   - **Accepted values**: `top-left` | `top-right` | `bottom-left` | `bottom-right` | `top` | `bottom` | `left` | `right` | `center`
