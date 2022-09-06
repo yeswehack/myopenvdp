@@ -1,9 +1,11 @@
 import { CvssMeta, ReportData } from './types';
 import { TrProvider } from './i18n/tr';
-import { format } from 'quasar';
+import { format, scroll } from 'quasar';
 import { renderTemplate } from '../utils';
 
 const { humanStorageSize } = format;
+const { getScrollTarget, setVerticalScrollPosition } = scroll;
+
 export const defaultAllowedFileExtensions = ['jpg', 'jpeg', 'png', 'txt'];
 
 export function getRequiredFieldsErrors(
@@ -201,4 +203,10 @@ export function reportDataToMarkdown(report: ReportData, cvssMeta: CvssMeta) {
     detailsEnv: report.details.env,
     details: report.details.report,
   });
+}
+
+export function scrollTo(el: HTMLElement, duration = 500) {
+  const target = getScrollTarget(el);
+  const offset = el.offsetTop;
+  setVerticalScrollPosition(target, offset, duration);
 }

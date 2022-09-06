@@ -323,7 +323,11 @@
             />
           </div>
           <div class="row">
-            <vdp-submission-logs :logs="submissionLogs" />
+            <vdp-submission-logs
+              :logs="submissionLogs"
+              :auto-scroll="logsAutoScroll"
+              :timestamp-format="logsTimestampFormat"
+            />
           </div>
         </div>
       </div>
@@ -378,6 +382,8 @@ interface Props {
   errorsNotificationPosition?: NotifyPosition;
   disclosurePolicyNotificationPosition?: NotifyPosition;
   captchaProvider?: () => Promise<CaptchaData>;
+  logsAutoScroll?: boolean;
+  logsTimestampFormat?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -388,6 +394,8 @@ const props = withDefaults(defineProps<Props>(), {
   errorsNotificationPosition: undefined,
   disclosurePolicyNotificationPosition: undefined,
   captchaProvider: undefined,
+  logsAutoScroll: true,
+  logsTimestampFormat: undefined,
 });
 
 type SubmitSuccessCallback = () => void;
@@ -697,7 +705,8 @@ async function sendReport(zipBlob: Blob, pgpMessage: string) {
       'submit',
       submission,
       (message?: string) => resolve(typeof message == 'string' && message ? message : tr('submissionReportSentLabel')),
-      (message?: string) => reject(typeof message == 'string' && message ? message : tr('unexpectedError', { message: '[no message]'}))
+      (message?: string) =>
+        reject(typeof message == 'string' && message ? message : tr('unexpectedError', { message: '[no message]' }))
     );
   });
 }
@@ -834,9 +843,7 @@ function notifySuccess(message: string) {
     timeout: 6000,
     html: true,
     message,
-    actions: [
-      { label: tr('notificationDismissLabel'), color: 'white', handler: () => void 0, }
-    ],
+    actions: [{ label: tr('notificationDismissLabel'), color: 'white', handler: () => void 0 }],
   });
 }
 
@@ -848,9 +855,7 @@ function notifyError(message: string) {
     timeout: 6000,
     html: true,
     message,
-    actions: [
-      { label: tr('notificationDismissLabel'), color: 'white', handler: () => void 0, }
-    ],
+    actions: [{ label: tr('notificationDismissLabel'), color: 'white', handler: () => void 0 }],
   });
 }
 
