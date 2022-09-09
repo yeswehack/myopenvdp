@@ -23,7 +23,7 @@ async function captchaProvider() {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return await fetch('https://vdp-form-backend.localhost/api/captcha?w=200&h=56').then((response) => response.json());
 }
-const extensions = ref('jpeg jpg png gif tiff bmp txt pdf'.split(' '));
+const extensions = ref('jpeg jpg png gif tiff bmp txt json pdf'.split(' '));
 const pgpKeys = ref([
   {
     name: 'PGP Key 1',

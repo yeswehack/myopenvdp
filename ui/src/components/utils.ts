@@ -6,7 +6,7 @@ import { renderTemplate } from '../utils';
 const { humanStorageSize } = format;
 const { getScrollTarget, setVerticalScrollPosition } = scroll;
 
-export const defaultAllowedFileExtensions = ['jpg', 'jpeg', 'png', 'txt'];
+export const defaultAllowedFileExtensions = ['jpg', 'jpeg', 'png', 'txt', 'json'];
 
 export function getRequiredFieldsErrors(
   tr: TrProvider,

@@ -2,6 +2,8 @@
 /dev
 /dev-backend
 /docker
+/docs
+docker-compose.yml
 umd-test.html
 
 .DS_Store
