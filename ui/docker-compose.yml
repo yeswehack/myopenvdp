@@ -7,8 +7,8 @@ services:
     container_name: traefik
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock:ro
-    - ./ui/docker/traefik/traefik.yaml:/etc/traefik/traefik.yaml
-    - ./ui/docker/traefik/cert/:/certs/
+    - ./docker/traefik/traefik.yaml:/etc/traefik/traefik.yaml
+    - ./docker/traefik/cert/:/certs/
     ports:
     - 8081:8081
     - 443:443
@@ -29,23 +29,23 @@ services:
     working_dir: /ui
     volumes:
     ## Main UI
-    - ./ui/src:/ui/src
-    - ./ui/.eslintrc.js:/ui/.eslintrc.js
-    - ./ui/package.json:/ui/package.json
-    - ./ui/tsconfig.json:/ui/tsconfig.json
-    - ./ui/yarn.lock:/ui/yarn.lock
+    - ./src:/ui/src
+    - ./.eslintrc.js:/ui/.eslintrc.js
+    - ./package.json:/ui/package.json
+    - ./tsconfig.json:/ui/tsconfig.json
+    - ./yarn.lock:/ui/yarn.lock
     ## Dev
-    - ./ui/dev/cert:/ui/dev/cert
-    - ./ui/dev/public:/ui/dev/public
-    - ./ui/dev/src:/ui/dev/src
-    - ./ui/dev/.eslintignore:/ui/dev/.eslintignore
-    - ./ui/dev/.eslintrc.js:/ui/dev/.eslintrc.js
-    - ./ui/dev/index.html:/ui/dev/index.html
-    - ./ui/dev/package.json:/ui/dev/package.json
-    - ./ui/dev/postcss.config.js:/ui/dev/postcss.config.js
-    - ./ui/dev/quasar.config.js:/ui/dev/quasar.config.js
-    - ./ui/dev/tsconfig.json:/ui/dev/tsconfig.json
-    - ./ui/dev/yarn.lock:/ui/dev/yarn.lock
+    - ./dev/cert:/ui/dev/cert
+    - ./dev/public:/ui/dev/public
+    - ./dev/src:/ui/dev/src
+    - ./dev/.eslintignore:/ui/dev/.eslintignore
+    - ./dev/.eslintrc.js:/ui/dev/.eslintrc.js
+    - ./dev/index.html:/ui/dev/index.html
+    - ./dev/package.json:/ui/dev/package.json
+    - ./dev/postcss.config.js:/ui/dev/postcss.config.js
+    - ./dev/quasar.config.js:/ui/dev/quasar.config.js
+    - ./dev/tsconfig.json:/ui/dev/tsconfig.json
+    - ./dev/yarn.lock:/ui/dev/yarn.lock
     command: sh -c 'yarn install && yarn dev --port=8081'
     networks:
     - vdp-form
@@ -64,13 +64,13 @@ services:
     image: node:14
     working_dir: /backend
     volumes:
-    - ./ui/dev-backend/index.html:/backend/index.html
-    - ./ui/dev-backend/reports:/backend/reports
-    - ./ui/dev-backend/src:/backend/src
-    - ./ui/dev-backend/package.json:/backend/package.json
-    - ./ui/dev-backend/tsconfig.json:/backend/tsconfig.json
-    - ./ui/dev-backend/vite.config.ts:/backend/vite.config.ts
-    - ./ui/dev-backend/yarn.lock:/backend/yarn.lock
+    - ./dev-backend/index.html:/backend/index.html
+    - ./dev-backend/reports:/backend/reports
+    - ./dev-backend/src:/backend/src
+    - ./dev-backend/package.json:/backend/package.json
+    - ./dev-backend/tsconfig.json:/backend/tsconfig.json
+    - ./dev-backend/vite.config.ts:/backend/vite.config.ts
+    - ./dev-backend/yarn.lock:/backend/yarn.lock
     command: sh -c 'yarn && yarn dev --host --port=8082'
     networks:
     - vdp-form

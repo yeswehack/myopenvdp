@@ -17,7 +17,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { VdpForm } from 'ui';
-const extensions = ref('jpeg jpg png gif tiff bmp txt pdf'.split(' '));
+const extensions = ref('jpeg jpg png gif tiff bmp txt json pdf'.split(' '));
 const pgpKeys = ref([
   {
     name: 'PGP Key 1',
@@ -113,7 +113,7 @@ function logSubmit(
     captcha: unknown;
     report: unknown;
   },
-  success: () => void,
+  success: (message?: string) => void,
   failure: (message?: string) => void
 ) {
   const body = new FormData();
@@ -128,7 +128,7 @@ function logSubmit(
         throw await response.text();
       }
     })
-    .then(() => success())
+    .then(() => success('Your report has been submitted!'))
     .catch((reason) => failure(reason as string));
 }
 </script>
