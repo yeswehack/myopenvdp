@@ -111,15 +111,31 @@ If you need the RTL variant of the CSS, then go for the following (instead of th
 The component API is described in [VdpForm.md](VdpForm.md).
 
 ## Providing a PGP key
-You need to provide a [PGP](https://en.wikipedia.org/wiki/Pretty_Good_Privacy) public key for the report's data to be encrypted by the user's browser. It is possible to let the user choose between multiple keys using the `pgp-keys` property. For a better user experience, each key must be named.
+You need to provide a [PGP](https://en.wikipedia.org/wiki/Pretty_Good_Privacy) public key using the `pgp-key` property for the report's data to be encrypted by the user's browser. It is possible to provide multiple keys, in which case, each key must have a different name.
 
-See [VdpForm.md Properties section](VdpForm.md#properties) for a more detailed description of the `pgp-keys` property.
+See [VdpForm.md Properties section](VdpForm.md#properties) for a more detailed description of the `pgp-key` property.
 
-### Example setup of `pgp-keys`
+### Example setup of `pgp-key`
+Single PGP key:
 ```html
 <vdp-form
   ...
-  pgp-keys="pgpKeys"
+  pgp-key="pgpKey"
+></vdp-form>
+<script>
+import { ref } from 'vue';
+const pgpKey = ref(
+`-----BEGIN PGP PUBLIC KEY BLOCK-----
+[...]
+-----END PGP PUBLIC KEY BLOCK-----`);
+</script>
+```
+
+Multiple PGP keys:
+```html
+<vdp-form
+  ...
+  pgp-key="pgpKeys"
 ></vdp-form>
 <script>
 import { ref } from 'vue';

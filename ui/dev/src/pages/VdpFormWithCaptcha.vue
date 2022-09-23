@@ -5,7 +5,7 @@
   >
     <vdp-form
       :captcha-provider="captchaProvider"
-      :pgp-keys="pgpKeys"
+      :pgp-key="pgpKeys"
       :attachment-max-size-bytes="4 * 1024 * 1024"
       :attachment-allowed-extensions="extensions"
       disclosure-policy-notification-position="bottom-left"

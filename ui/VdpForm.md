@@ -2,10 +2,11 @@
 
 ## Properties
 
-- **`pgp-keys`** (Array) [Required]
-  - **Description**: Array of PGP public keys. Each entry must be an object with 2 properties : 'name' containing the name to be displayed and 'key' containing the PGP key
-  - **Example**:
-    - `[{"name":"Key 1","key":"-----BEGIN PGP PUBLIC KEY BLOCK-----\n..."},{"name":"Key 2","key":"-----BEGIN PGP PUBLIC KEY BLOCK-----\n..."}]`
+- **`pgp-key`** (String | Array) [Required]
+  - **Description**: A PGP public key or an array of PGP public keys for which each entry must be an object with 2 properties : 'name' containing the name to be displayed and 'key' containing the PGP key
+  - **Examples**:
+    - `-----BEGIN PGP PUBLIC KEY BLOCK-----\n...\n-----END PGP PUBLIC KEY BLOCK-----`
+    - `[{"name":"Key 1","key":"-----BEGIN PGP PUBLIC KEY BLOCK-----\n...\n-----END PGP PUBLIC KEY BLOCK-----"},{"name":"Key 2","key":"-----BEGIN PGP PUBLIC KEY BLOCK-----\n...\n-----END PGP PUBLIC KEY BLOCK-----"}]`
 - **`captcha-provider`** (Function)
   - **Description**: Provider of the captcha data (async function)
   - **Function form**: `() => Object`

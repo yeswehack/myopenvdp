@@ -42,17 +42,6 @@
             :options="pgpKeySelectOptions"
             class="summary-cert"
           />
-          <div
-            v-if="pgpKeySelectOptions.length > 1"
-            class="row"
-          >
-            <div class="col column choose-pgp-key q-pa-md">
-              <p class="label">{{ tr('pgpKeyWhichLabel') }}</p>
-              <!-- eslint-disable vue/no-v-html -->
-              <div v-html="tr('pgpKeyWhichExplanation')"></div>
-              <!-- eslint-enable -->
-            </div>
-          </div>
           <div class="text-h5 cvss-header">
             {{ tr('cvss3ScoreTitle') }}
           </div>
@@ -336,7 +325,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, reactive, ref, unref, toRaw, watch } from 'vue';
+import { computed, onMounted, reactive, ref, unref, toRaw } from 'vue';
 import { useQuasar, format, QNotifyCreateOptions, QForm } from 'quasar';
 import JSZip from 'jszip';
 import cvss from 'cvss';
@@ -349,7 +338,7 @@ import {
   reportDataToJson,
   reportDataToMarkdown,
 } from './utils';
-import { renderTemplate } from '../utils';
+import { renderTemplate, copy } from '../utils';
 import { rawTr, tr } from './i18n/tr';
 import VdpCaptcha from './VdpCaptcha.vue';
 import VdpCvss from './VdpCvss.vue';
@@ -371,10 +360,12 @@ type CaptchaData = {
 };
 
 interface Props {
-  pgpKeys: {
-    name: string;
-    key: string;
-  }[];
+  pgpKey:
+    | string
+    | {
+        name: string;
+        key: string;
+      }[];
   attachmentMaxSizeBytes?: number;
   attachmentAllowedExtensions?: string[];
   notificationsPosition?: NotifyPosition;
@@ -442,7 +433,7 @@ const initialForm = {
     UI: '',
   },
 } as ReportData;
-const form = reactive(initialForm);
+const form = reactive(copy(initialForm));
 
 Object.assign(form, {
   policyAccepted: true,
@@ -564,7 +555,11 @@ Insert an image : {YWH-RXXX}
   },
 } as ReportData);
 
-const pgpKeySelectOptions = computed(() => props.pgpKeys.map((pgpKey) => ({ label: pgpKey.name, value: pgpKey.name })));
+const pgpKeySelectOptions = computed(() =>
+  typeof props.pgpKey == 'string'
+    ? [{ label: 'default', value: 'default', key: props.pgpKey }]
+    : props.pgpKey.map((pgpKey) => ({ label: pgpKey.name, value: pgpKey.name, key: pgpKey.key }))
+);
 
 const computedCvss = computed<CvssMeta>(() => ({
   vector: cvssToVector(form.cvss),
@@ -839,7 +834,9 @@ async function submit() {
       updateLastSubmissionLog({
         message: tr('submissionCompressingReportSuccess'),
       });
-      const selectedPgpKey = props.pgpKeys.find((pgpKey) => pgpKey.name == form.summary.pgpKey);
+      const selectedPgpKey = pgpKeySelectOptions.value.find(
+        (pgpKeyOption) => pgpKeyOption.label == form.summary.pgpKey
+      );
       if (!selectedPgpKey) {
         return Promise.reject(tr('errorFieldIsEmpty', { field: 'PGP Key' }));
       }
@@ -883,6 +880,7 @@ async function submit() {
     .then(({ successMessage }) => {
       notifySuccess(successMessage);
     })
+    .then(() => resetForm())
     .catch((error) => {
       if (error) {
         updateLastSubmissionLog({
@@ -894,7 +892,6 @@ async function submit() {
       }
     })
     .finally(() => {
-      void refreshCaptcha();
       submitting.value = false;
     });
 }
@@ -923,10 +920,13 @@ function notifyError(message: string) {
   });
 }
 
-watch(form, () => {
-  resetSubmissionLogs();
-});
-
+const resetForm = () => {
+  Object.assign(form, copy(initialForm));
+  if (pgpKeySelectOptions.value.length == 1) {
+    form.summary.pgpKey = pgpKeySelectOptions.value[0].label;
+  }
+  return refreshCaptcha();
+};
 const refreshCaptcha = async () => {
   if (props.captchaProvider) {
     providedCaptchaData.value = await props.captchaProvider();
@@ -934,8 +934,8 @@ const refreshCaptcha = async () => {
 };
 onMounted(async () => {
   await refreshCaptcha();
-  if (props.pgpKeys.length == 1) {
-    form.summary.pgpKey = props.pgpKeys[0].name;
+  if (pgpKeySelectOptions.value.length == 1) {
+    form.summary.pgpKey = pgpKeySelectOptions.value[0].label;
   }
   setOpenPolicyLinkEventListeners();
 });

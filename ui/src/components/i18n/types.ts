@@ -6,8 +6,6 @@ export type VdpFormTranslation = {
   productPlaceholder: string;
   pgpKeyLabel: string;
   pgpKeyPlaceholder: string;
-  pgpKeyWhichLabel: string;
-  pgpKeyWhichExplanation: string;
   cvss3ScoreTitle: string;
   cvss3SeverityLabel: string;
   cvss3AttackVectorLabel: string;

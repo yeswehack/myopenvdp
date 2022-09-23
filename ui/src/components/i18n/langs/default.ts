@@ -8,11 +8,6 @@ const defaultFormTranslations: VdpFormTranslation = {
   productPlaceholder: 'Enter the product name or reference',
   pgpKeyLabel: 'PGP Key',
   pgpKeyPlaceholder: 'Select PGP Key',
-  pgpKeyWhichLabel: 'Which PGP Key should I choose?',
-  pgpKeyWhichExplanation:
-    "Reports have to be sent directly to the product/website owner's " +
-    "CERT when existing, or to the national CERT of product/website's " +
-    'owner otherwise.',
   cvss3ScoreTitle: 'CVSS3 Score',
   cvss3SeverityLabel: 'Severity',
   cvss3AttackVectorLabel: 'Attack Vector',
