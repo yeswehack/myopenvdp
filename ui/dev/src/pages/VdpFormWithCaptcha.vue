@@ -11,6 +11,7 @@
       disclosure-policy-notification-position="bottom-left"
       success-notification-position="top-right"
       errors-notification-position="top-right"
+      :translations="translations"
       @submit="logSubmit"
     />
   </q-page>
@@ -114,6 +115,9 @@ rCHIDOh1bOdGsOYVS9BaSuhPtwf/zYAC9VA+mI2qzQJji7thrBsx
 -----END PGP PUBLIC KEY BLOCK-----`,
   },
 ]);
+const translations = ref({
+  vulnerabilitySummaryTitle: 'Describe the vulnerability (you will be asked to solve a captcha)',
+});
 function logSubmit(
   payload: {
     captcha: unknown;

@@ -120,7 +120,7 @@ Single PGP key:
 ```html
 <vdp-form
   ...
-  pgp-key="pgpKey"
+  :pgp-key="pgpKey"
 ></vdp-form>
 <script>
 import { ref } from 'vue';
@@ -135,7 +135,7 @@ Multiple PGP keys:
 ```html
 <vdp-form
   ...
-  pgp-key="pgpKeys"
+  :pgp-key="pgpKeys"
 ></vdp-form>
 <script>
 import { ref } from 'vue';
@@ -172,7 +172,7 @@ See [VdpForm.md Properties section](VdpForm.md#properties) for a more detailed d
 ```html
 <vdp-form
   ...
-  captcha-provider="captchaProvider"
+  :captcha-provider="captchaProvider"
 ></vdp-form>
 <script>
 async function captchaProvider() {
@@ -225,6 +225,27 @@ function onSubmit(
     .then(() => success('Your report has been submitted!'))
     .catch((reason) => failure(reason as string));
 }
+</script>
+```
+
+## Providing custom translations
+It is possible to provide custom translations for the form and notifications.
+
+See [VdpForm.md Properties section](VdpForm.md#properties) for a more detailed description of the `translations` property.
+
+### Example setup of `translations`
+```html
+<vdp-form
+  ...
+  :translations="translations"
+></vdp-form>
+<script>
+import { ref } from 'vue';
+const translations = ref({
+  vulnerabilitySummaryTitle: 'Describe the vulnerability',
+  disclosurePolicyCheckbox: 'I have read and I accept the {{disclosurePolicy}}',
+  // [... more translations ...]
+});
 </script>
 ```
 

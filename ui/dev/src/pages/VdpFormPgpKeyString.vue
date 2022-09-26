@@ -9,6 +9,7 @@
       :attachment-allowed-extensions="extensions"
       disclosure-policy-notification-position="bottom-left"
       errors-notification-position="top-right"
+      :translations="translations"
       @submit="logSubmit"
     />
   </q-page>
@@ -59,6 +60,9 @@ ACLhTZ0Y9GKAN1+V0KB6dqgE3MHZAw1NZRDTnlfN3M345fj/Ypg09gw5KzAAtFVa
 rCHIDOh1bOdGsOYVS9BaSuhPtwf/zYAC9VA+mI2qzQJji7thrBsx
 =wicI
 -----END PGP PUBLIC KEY BLOCK-----`);
+const translations = ref({
+  vulnerabilitySummaryTitle: 'Describe the vulnerability (no PGP key selection)',
+});
 function logSubmit(
   payload: {
     captcha: unknown;

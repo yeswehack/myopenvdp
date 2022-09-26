@@ -48,9 +48,9 @@
           <vdp-cvss
             v-model="form.cvss"
             class="summary-cvss"
-            :score-label="tr('cvss3ScoreTitle')"
+            :card-score-title="tr('cvss3CardScoreTitle')"
+            :card-severity-title="tr('cvss3CardSeverityTitle')"
             :field-required-label="tr('valueMustNotBeBlank')"
-            :severity-label="tr('cvss3SeverityLabel')"
             :attack-vector-label="tr('cvss3AttackVectorLabel')"
             :user-interaction-label="tr('cvss3UserInteractionLabel')"
             :attack-complexity-label="tr('cvss3AttackComplexityLabel')"
@@ -59,16 +59,28 @@
             :integrity-label="tr('cvss3IntegrityLabel')"
             :scope-label="tr('cvss3ScopeLabel')"
             :availability-label="tr('cvss3AvailabilityLabel')"
-            :network-label="tr('cvss3NetworkLabel')"
-            :adjacent-label="tr('cvss3AdjacentLabel')"
-            :local-label="tr('cvss3LocalLabel')"
-            :physical-label="tr('cvss3PhysicalLabel')"
-            :none-label="tr('cvss3NoneLabel')"
-            :low-label="tr('cvss3LowLabel')"
-            :high-label="tr('cvss3HighLabel')"
-            :required-label="tr('cvss3RequiredLabel')"
-            :changed-label="tr('cvss3ChangedLabel')"
-            :unchanged-label="tr('cvss3UnchangedLabel')"
+            :av-network-label="tr('cvss3AvNetworkLabel')"
+            :av-adjacent-label="tr('cvss3AvAdjacentLabel')"
+            :av-local-label="tr('cvss3AvLocalLabel')"
+            :av-physical-label="tr('cvss3AvPhysicalLabel')"
+            :ui-none-label="tr('cvss3UiNoneLabel')"
+            :ui-required-label="tr('cvss3UiRequiredLabel')"
+            :ac-low-label="tr('cvss3AcLowLabel')"
+            :ac-high-label="tr('cvss3AcHighLabel')"
+            :c-none-label="tr('cvss3CNoneLabel')"
+            :c-low-label="tr('cvss3CLowLabel')"
+            :c-high-label="tr('cvss3CHighLabel')"
+            :pr-none-label="tr('cvss3PrNoneLabel')"
+            :pr-low-label="tr('cvss3PrLowLabel')"
+            :pr-high-label="tr('cvss3PrHighLabel')"
+            :i-none-label="tr('cvss3INoneLabel')"
+            :i-low-label="tr('cvss3ILowLabel')"
+            :i-high-label="tr('cvss3IHighLabel')"
+            :s-unchanged-label="tr('cvss3SUnchangedLabel')"
+            :s-changed-label="tr('cvss3SChangedLabel')"
+            :a-none-label="tr('cvss3ANoneLabel')"
+            :a-low-label="tr('cvss3ALowLabel')"
+            :a-high-label="tr('cvss3AHighLabel')"
           />
           <div class="text-h5 profile-header">
             <q-icon
@@ -339,7 +351,8 @@ import {
   reportDataToMarkdown,
 } from './utils';
 import { renderTemplate, copy } from '../utils';
-import { rawTr, tr } from './i18n/tr';
+import { rawTr as defaultRawTr, TrProvider } from './i18n/tr';
+import { VdpFormPartialTranslation, VdpFormTranslationKey } from './i18n/types';
 import VdpCaptcha from './VdpCaptcha.vue';
 import VdpCvss from './VdpCvss.vue';
 import VdpInput from './VdpInput.vue';
@@ -375,6 +388,7 @@ interface Props {
   captchaProvider?: () => Promise<CaptchaData>;
   logsAutoScroll?: boolean;
   logsTimestampFormat?: string;
+  translations?: VdpFormPartialTranslation;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -387,7 +401,14 @@ const props = withDefaults(defineProps<Props>(), {
   captchaProvider: undefined,
   logsAutoScroll: true,
   logsTimestampFormat: undefined,
+  translations: () => {
+    return {};
+  },
 });
+
+const rawTr = (key: VdpFormTranslationKey) => props.translations[key] || defaultRawTr(key);
+const tr: TrProvider = (key: VdpFormTranslationKey, data: Record<string, string | number> = {}) =>
+  renderTemplate(rawTr(key), data);
 
 type SubmitSuccessCallback = () => void;
 type SubmitFailureCallback = (message?: string) => void;
