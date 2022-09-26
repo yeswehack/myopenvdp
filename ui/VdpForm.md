@@ -61,6 +61,203 @@
 - **`disclosure-policy-notification-position`** (String)
   - **Description**: Position for disclosure policy notification. Inherits from 'notifications-position' if not set
   - **Accepted values**: `top-left` | `top-right` | `bottom-left` | `bottom-right` | `top` | `bottom` | `left` | `right` | `center`
+- **`translations`** (object)
+  - **Description**: Custom translations
+  - **Props**:
+    - **`vulnerabilitySummaryTitle`** (String)
+      - **Description**: Title for vulnerability summary section
+    - **`reportTitleLabel`** (String)
+      - **Description**: Label for report title field
+    - **`reportTitlePlaceholder`** (String)
+      - **Description**: Placeholder for report title field
+    - **`productLabel`** (String)
+      - **Description**: Label for product field
+    - **`productPlaceholder`** (String)
+      - **Description**: Placeholder for product field
+    - **`pgpKeyLabel`** (String)
+      - **Description**: Label for PGP key field
+    - **`pgpKeyPlaceholder`** (String)
+      - **Description**: Placeholder for PGP key field
+    - **`cvss3ScoreTitle`** (String)
+      - **Description**: Title for CVSS3 section
+    - **`cvss3CardScoreTitle`** (String)
+      - **Description**: Title for CVSS3 severity card
+    - **`cvss3CardSeverityTitle`** (String)
+      - **Description**: Title for CVSS3 severity card
+    - **`cvss3AttackVectorLabel`** (String)
+      - **Description**: Label for CVSS3 Attack Vector field
+    - **`cvss3UserInteractionLabel`** (String)
+      - **Description**: Label for CVSS3 User Interaction field
+    - **`cvss3AttackComplexityLabel`** (String)
+      - **Description**: Label for CVSS3 Attack Complexity field
+    - **`cvss3ConfidentialityLabel`** (String)
+      - **Description**: Label for CVSS3 Confidentiality field
+    - **`cvss3PrivilegesRequiredLabel`** (String)
+      - **Description**: Label for CVSS3 Privileges Required field
+    - **`cvss3IntegrityLabel`** (String)
+      - **Description**: Label for CVSS3 Integrity field
+    - **`cvss3ScopeLabel`** (String)
+      - **Description**: Label for CVSS3 Scope field
+    - **`cvss3AvailabilityLabel`** (String)
+      - **Description**: Label for CVSS3 Availability field
+    - **`cvss3AvNetworkLabel`** (String)
+      - **Description**: Label for CVSS3 Network Attack Vector field
+    - **`cvss3AvAdjacentLabel`** (String)
+      - **Description**: Label for CVSS3 Adjacent Attack Vector field
+    - **`cvss3AvLocalLabel`** (String)
+      - **Description**: Label for CVSS3 Local Attack Vector field
+    - **`cvss3AvPhysicalLabel`** (String)
+      - **Description**: Label for CVSS3 Physical Attack Vector field
+    - **`cvss3UiNoneLabel`** (String)
+      - **Description**: Label for CVSS3 None User Interaction field
+    - **`cvss3UiRequiredLabel`** (String)
+      - **Description**: Label for CVSS3 Required User Interaction field
+    - **`cvss3AcLowLabel`** (String)
+      - **Description**: Label for CVSS3 Low Attack Complexity field
+    - **`cvss3AcHighLabel`** (String)
+      - **Description**: Label for CVSS3 High Attack Complexity field
+    - **`cvss3CNoneLabel`** (String)
+      - **Description**: Label for CVSS3 None Confidentiality field
+    - **`cvss3CLowLabel`** (String)
+      - **Description**: Label for CVSS3 Low Confidentiality field
+    - **`cvss3CHighLabel`** (String)
+      - **Description**: Label for CVSS3 High Confidentiality field
+    - **`cvss3PrNoneLabel`** (String)
+      - **Description**: Label for CVSS3 None Privileges Required field
+    - **`cvss3PrLowLabel`** (String)
+      - **Description**: Label for CVSS3 Low Privileges Required field
+    - **`cvss3PrHighLabel`** (String)
+      - **Description**: Label for CVSS3 High Privileges Required field
+    - **`cvss3INoneLabel`** (String)
+      - **Description**: Label for CVSS3 None Integrity field
+    - **`cvss3ILowLabel`** (String)
+      - **Description**: Label for CVSS3 Low Integrity field
+    - **`cvss3IHighLabel`** (String)
+      - **Description**: Label for CVSS3 High Integrity field
+    - **`cvss3SUnchangedLabel`** (String)
+      - **Description**: Label for CVSS3 Unchanged Scope field
+    - **`cvss3SChangedLabel`** (String)
+      - **Description**: Label for CVSS3 Changed Scope field
+    - **`cvss3ANoneLabel`** (String)
+      - **Description**: Label for CVSS3 None Availability field
+    - **`cvss3ALowLabel`** (String)
+      - **Description**: Label for CVSS3 Low Availability field
+    - **`cvss3AHighLabel`** (String)
+      - **Description**: Label for CVSS3 High Availability field
+    - **`reporterInformationTitle`** (String)
+      - **Description**: Title for reporter information section
+    - **`reporterNameLabel`** (String)
+      - **Description**: Label for reporter name field
+    - **`reporterNamePlaceholder`** (String)
+      - **Description**: Placeholder for reporter name field
+    - **`reporterEmailLabel`** (String)
+      - **Description**: Label for reporter email field
+    - **`reporterEmailPlaceholder`** (String)
+      - **Description**: Placeholder for reporter email field
+    - **`reporterPgpKeyLabel`** (String)
+      - **Description**: Label for reporter PGP public key field
+    - **`technicalDetailsTitle`** (String)
+      - **Description**: Title for technical details section
+    - **`endpointLabel`** (String)
+      - **Description**: Label for endpoint field
+    - **`endpointPlaceholder`** (String)
+      - **Description**: Placeholder for endpoint field
+    - **`vulnerablePartLabel`** (String)
+      - **Description**: Label for vulnerable part field
+    - **`vulnerablePartPlaceholder`** (String)
+      - **Description**: Placeholder for vulnerable part field
+    - **`partNameLabel`** (String)
+      - **Description**: Label for vulnerable part name field
+    - **`partNamePlaceholder`** (String)
+      - **Description**: Placeholder for vulnerable part name field
+    - **`payloadLabel`** (String)
+      - **Description**: Label for payload field
+    - **`payloadPlaceholder`** (String)
+      - **Description**: Placeholder for payload field
+    - **`technicalEnvironmentLabel`** (String)
+      - **Description**: Label for technical details field
+    - **`technicalEnvironmentPlaceholder`** (String)
+      - **Description**: Placeholder for technical details field
+    - **`technicalDetailsLabel`** (String)
+      - **Description**: Label for technical details field
+    - **`technicalDetailsMarkdown`** (String)
+      - **Description**: Template for technical details markdown usage explaination (with {{markdown}} variable being an HTML link to Markdown documentation)
+    - **`technicalDetailsEdit`** (String)
+      - **Description**: Label for technical details edition tab
+    - **`technicalDetailsPreview`** (String)
+      - **Description**: Label for technical details preview tab
+    - **`attachmentsPlaceholder`** (String)
+      - **Description**: Placeholder template for attachments (with {{extensions}} variable being the list of allowed file extensions and {{maxSize}} variable being the human readable maximum size for each attachment)
+    - **`attachmentsErrorsTitle`** (String)
+      - **Description**: Title for attachments error notification
+    - **`attachmentTooBigError`** (String)
+      - **Description**: Attachment too big error message (with {{file}} variable being the name of the attachment, {{size}} variable being the human readable size of the attachment and {{maxSize}} variable being the human readable maximum size for each attachment)
+    - **`attachmentTypeError`** (String)
+      - **Description**: Attachment type not allowed error message (with {{file}} variable being the name of the attachment)
+    - **`captchaLabel`** (String)
+      - **Description**: Label for captcha field
+    - **`captchaPlaceholder`** (String)
+      - **Description**: Placeholder for captcha field
+    - **`disclosurePolicyCheckbox`** (String)
+      - **Description**: Label for disclosure policy checkbox (with {{disclosurePolicy}} variable being an HTML link to the disclosure policy)
+    - **`disclosurePolicyLabel`** (String)
+      - **Description**: Label for disclosure policy link
+    - **`disclosurePolicyHtml`** (String)
+      - **Description**: Disclosure policy (in HTML)
+    - **`disclosurePolicyAcceptLabel`** (String)
+      - **Description**: Label for Accept button in disclosure policy notification
+    - **`disclosurePolicyRefuseLabel`** (String)
+      - **Description**: Label for Refuse button in disclosure policy notification
+    - **`intellectualPropertyLabel`** (String)
+      - **Description**: Label for Intellectual Property checkbox
+    - **`intellectualPropertyCheckbox`** (String)
+      - **Description**: Label for Intellectual Property error message
+    - **`encryptedBeforeSubmission`** (String)
+      - **Description**: Label for encrypted section icon
+    - **`sendReportLabel`** (String)
+      - **Description**: Label for send report button
+    - **`maxChars`** (String)
+      - **Description**: Template for maximum characters field label indicator (with {{max}} variables being the number of maximum allowed characters)
+    - **`valueMustNotBeBlank`** (String)
+      - **Description**: Error message indicating that a field should not be blank/empty
+    - **`notificationDismissLabel`** (String)
+      - **Description**: Label for Dismiss button in notifications
+    - **`formErrorsTitle`** (String)
+      - **Description**: Title for form errors notification
+    - **`formInvalidMessage`** (String)
+      - **Description**: Error message indicating that the form is invalid
+    - **`errorFieldIsEmpty`** (String)
+      - **Description**: Template error message for indicating that a field is blank/empty (with {{field}} variable being the name of the field
+    - **`errorFieldIsNotAccepted`** (String)
+      - **Description**: Template error message for indicating that a checkbox is not checked (with {{field}} variable being the name of the field
+    - **`errorCvssAreNotFilled`** (String)
+      - **Description**: Template error message for indicating that the CVSS field is not correctly filled (with {{field}} variable being the name of the field
+    - **`unexpectedError`** (String)
+      - **Description**: Template error message for unexpected errors (with {{message}} variable being the message of the error)
+    - **`submissionCompressingReportLabel`** (String)
+      - **Description**: Label for report ZIP compression stage in the submission logs
+    - **`submissionCompressingReportError`** (String)
+      - **Description**: Error message for report ZIP compression stage in the submission logs
+    - **`submissionCompressingReportSuccess`** (String)
+      - **Description**: Success message for report ZIP compression stage in the submission logs
+    - **`submissionEncryptingReportLabel`** (String)
+      - **Description**: Label for report encryption stage in the submission logs
+    - **`submissionEncryptingReportSuccess`** (String)
+      - **Description**: Success message for report encryption stage in the submission logs
+    - **`submissionSendingReportLabel`** (String)
+      - **Description**: Label for report submission stage in the submission logs
+    - **`submissionSendingReportSuccess`** (String)
+      - **Description**: Success message for report submission stage in the submission logs
+    - **`submissionSendingReportTooBigError`** (String)
+      - **Description**: Error message for report submission stage in the submission logs
+    - **`submissionReportDownloadLabel`** (String)
+      - **Description**: Label for report download stage in the submission logs
+    - **`submissionReportDownloadMessage`** (String)
+      - **Description**: Success message for report submission stage in the submission logs
+    - **`submissionReportSentLabel`** (String)
+      - **Description**: Final message for successfull report submission in the submission logs
+  - **Example**:
+    - `{"vulnerabilitySummaryTitle": "Please describe the vulnerability","disclosurePolicyCheckbox":"I have read and I accept the {{disclosurePolicy}}"}`
 
 ## Events
 

@@ -24,9 +24,9 @@
           />
         </div>
         <vdp-cvss-result
-          :score-label="scoreLabel"
+          :score-title="cardScoreTitle"
           :score="score"
-          :severity-label="severityLabel"
+          :severity-title="cardSeverityTitle"
           :severity="severity"
           class="result"
         />
@@ -45,8 +45,9 @@ import cvss from 'cvss';
 interface Props {
   modelValue: Record<string, string>;
   fieldRequiredLabel?: string;
-  scoreLabel?: string;
-  severityLabel?: string;
+  cardScoreTitle?: string;
+  cardSeverityTitle?: string;
+
   attackVectorLabel?: string;
   userInteractionLabel?: string;
   attackComplexityLabel?: string;
@@ -55,22 +56,43 @@ interface Props {
   integrityLabel?: string;
   scopeLabel?: string;
   availabilityLabel?: string;
-  networkLabel?: string;
-  adjacentLabel?: string;
-  localLabel?: string;
-  physicalLabel?: string;
-  noneLabel?: string;
-  lowLabel?: string;
-  highLabel?: string;
-  requiredLabel?: string;
-  changedLabel?: string;
-  unchangedLabel?: string;
+
+  avNetworkLabel?: string;
+  avAdjacentLabel?: string;
+  avLocalLabel?: string;
+  avPhysicalLabel?: string;
+
+  uiNoneLabel?: string;
+  uiRequiredLabel?: string;
+
+  acLowLabel?: string;
+  acHighLabel?: string;
+
+  cNoneLabel?: string;
+  cLowLabel?: string;
+  cHighLabel?: string;
+
+  prNoneLabel?: string;
+  prLowLabel?: string;
+  prHighLabel?: string;
+
+  iNoneLabel?: string;
+  iLowLabel?: string;
+  iHighLabel?: string;
+
+  sUnchangedLabel?: string;
+  sChangedLabel?: string;
+
+  aNoneLabel?: string;
+  aLowLabel?: string;
+  aHighLabel?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  scoreLabel: undefined,
+  cardScoreTitle: undefined,
+  cardSeverityTitle: undefined,
   fieldRequiredLabel: undefined,
-  severityLabel: undefined,
+
   attackVectorLabel: 'Attack Vector',
   userInteractionLabel: 'User Interaction',
   attackComplexityLabel: 'Attack Complexity',
@@ -79,16 +101,36 @@ const props = withDefaults(defineProps<Props>(), {
   integrityLabel: 'Integrity',
   scopeLabel: 'Scope',
   availabilityLabel: 'Availability',
-  networkLabel: 'Network',
-  adjacentLabel: 'Adjacent',
-  localLabel: 'Local',
-  physicalLabel: 'Physical',
-  noneLabel: 'None',
-  lowLabel: 'Low',
-  highLabel: 'High',
-  requiredLabel: 'Required',
-  changedLabel: 'Changed',
-  unchangedLabel: 'Unchanged',
+
+  avNetworkLabel: 'Network',
+  avAdjacentLabel: 'Adjacent',
+  avLocalLabel: 'Local',
+  avPhysicalLabel: 'Physical',
+
+  uiNoneLabel: 'None',
+  uiRequiredLabel: 'Required',
+
+  acLowLabel: 'Low',
+  acHighLabel: 'High',
+
+  cNoneLabel: 'None',
+  cLowLabel: 'Low',
+  cHighLabel: 'High',
+
+  prNoneLabel: 'None',
+  prLowLabel: 'Low',
+  prHighLabel: 'High',
+
+  iNoneLabel: 'None',
+  iLowLabel: 'Low',
+  iHighLabel: 'High',
+
+  sUnchangedLabel: 'Unchanged',
+  sChangedLabel: 'Changed',
+
+  aNoneLabel: 'None',
+  aLowLabel: 'Low',
+  aHighLabel: 'High',
 });
 const emit = defineEmits(['update:modelValue']);
 const model = computed({
@@ -118,19 +160,19 @@ const CVSSDefinition = computed(() => ({
     label: props.attackVectorLabel,
     choices: [
       {
-        label: props.networkLabel,
+        label: props.avNetworkLabel,
         value: 'N',
       },
       {
-        label: props.adjacentLabel,
+        label: props.avAdjacentLabel,
         value: 'A',
       },
       {
-        label: props.localLabel,
+        label: props.avLocalLabel,
         value: 'L',
       },
       {
-        label: props.physicalLabel,
+        label: props.avPhysicalLabel,
         value: 'P',
       },
     ],
@@ -139,11 +181,11 @@ const CVSSDefinition = computed(() => ({
     label: props.userInteractionLabel,
     choices: [
       {
-        label: props.noneLabel,
+        label: props.uiNoneLabel,
         value: 'N',
       },
       {
-        label: props.requiredLabel,
+        label: props.uiRequiredLabel,
         value: 'R',
       },
     ],
@@ -152,11 +194,11 @@ const CVSSDefinition = computed(() => ({
     label: props.attackComplexityLabel,
     choices: [
       {
-        label: props.lowLabel,
+        label: props.acLowLabel,
         value: 'L',
       },
       {
-        label: props.highLabel,
+        label: props.acHighLabel,
         value: 'H',
       },
     ],
@@ -165,15 +207,15 @@ const CVSSDefinition = computed(() => ({
     label: props.confidentialityLabel,
     choices: [
       {
-        label: props.noneLabel,
+        label: props.cNoneLabel,
         value: 'N',
       },
       {
-        label: props.lowLabel,
+        label: props.cLowLabel,
         value: 'L',
       },
       {
-        label: props.highLabel,
+        label: props.cHighLabel,
         value: 'H',
       },
     ],
@@ -182,15 +224,15 @@ const CVSSDefinition = computed(() => ({
     label: props.privilegesRequiredLabel,
     choices: [
       {
-        label: props.noneLabel,
+        label: props.prNoneLabel,
         value: 'N',
       },
       {
-        label: props.lowLabel,
+        label: props.prLowLabel,
         value: 'L',
       },
       {
-        label: props.highLabel,
+        label: props.prHighLabel,
         value: 'H',
       },
     ],
@@ -199,15 +241,15 @@ const CVSSDefinition = computed(() => ({
     label: props.integrityLabel,
     choices: [
       {
-        label: props.noneLabel,
+        label: props.iNoneLabel,
         value: 'N',
       },
       {
-        label: props.lowLabel,
+        label: props.iLowLabel,
         value: 'L',
       },
       {
-        label: props.highLabel,
+        label: props.iHighLabel,
         value: 'H',
       },
     ],
@@ -216,11 +258,11 @@ const CVSSDefinition = computed(() => ({
     label: props.scopeLabel,
     choices: [
       {
-        label: props.unchangedLabel,
+        label: props.sUnchangedLabel,
         value: 'U',
       },
       {
-        label: props.changedLabel,
+        label: props.sChangedLabel,
         value: 'C',
       },
     ],
@@ -229,15 +271,15 @@ const CVSSDefinition = computed(() => ({
     label: props.availabilityLabel,
     choices: [
       {
-        label: props.noneLabel,
+        label: props.aNoneLabel,
         value: 'N',
       },
       {
-        label: props.lowLabel,
+        label: props.aLowLabel,
         value: 'L',
       },
       {
-        label: props.highLabel,
+        label: props.aHighLabel,
         value: 'H',
       },
     ],

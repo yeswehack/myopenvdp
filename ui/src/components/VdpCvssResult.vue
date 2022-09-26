@@ -1,11 +1,11 @@
 <template>
   <div class="vdp-cvss-score">
     <div class="panel score">
-      <div>{{ scoreLabel }}</div>
+      <div>{{ scoreTitle }}</div>
       <div>{{ score }}</div>
     </div>
     <div class="panel severity">
-      <div>{{ severityLabel }}</div>
+      <div>{{ severityTitle }}</div>
       <div>{{ severity }}</div>
     </div>
   </div>
@@ -15,16 +15,16 @@
 import { computed } from 'vue';
 
 interface Props {
-  scoreLabel?: string;
+  scoreTitle?: string;
   score?: number;
-  severityLabel?: string;
+  severityTitle?: string;
   severity?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  scoreLabel: 'CVSS Score',
+  scoreTitle: 'CVSS Score',
   score: 0,
-  severityLabel: 'Severity',
+  severityTitle: 'Severity',
   severity: 'None',
 });
 

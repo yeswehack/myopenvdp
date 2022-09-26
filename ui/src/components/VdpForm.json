@@ -107,6 +107,14 @@
       "desc": "Position for disclosure policy notification. Inherits from 'notifications-position' if not set",
       "values": ["top-left", "top-right", "bottom-left", "bottom-right", "top", "bottom", "left", "right", "center"],
       "category": "behavior"
+    },
+
+    "translations": {
+      "type": "object",
+      "desc": "Custom translations",
+      "examples": [
+        "{\"vulnerabilitySummaryTitle\": \"Please describe the vulnerability\",\"disclosurePolicyCheckbox\":\"I have read and I accept the {{disclosurePolicy}}\"}"
+      ]
     }
   },
 
