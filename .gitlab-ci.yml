@@ -3,13 +3,16 @@ image: docker:20
 variables:
   GIT_DEPTH: 0
   GIT_SUBMODULE_STRATEGY: recursive
+  CONTAINER_BASE: "${CI_REGISTRY}/${CI_PROJECT_PATH}"
+  DOCKER_HUB_BASE_TAG: "yeswehack/vdp-form"
 
 stages:
   - check
   - build
   - build-docker
+  - publish
 
-.lint:
+Lint:
   stage: check
   tags:
     - docker20
@@ -20,7 +23,7 @@ stages:
   script:
     - cd ui && yarn install && yarn lint
 
-check-versions:
+Check Versions:
   stage: check
   tags:
     - docker20
@@ -32,7 +35,7 @@ check-versions:
     - jq -r '.version' ui/package.json > version.txt
     - diff -u version.txt <(jq -r '.version' app-extension/package.json) || exit 1
 
-build-ui:
+Build UI:
   stage: build
   tags:
     - docker20
@@ -47,26 +50,63 @@ build-ui:
       - ui/dist
     expire_in: 1 day
 
-build-docker:
+Build Docker:
   stage: build-docker
   tags:
     - docker20
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [ "" ]
-  artifacts:
-    paths:
-      - docker-image
   script:
     # there's an issue with kaniko with multi-stage builds and symlinks
+    # so we get ui dist files from ui build artifact
     - rm -rf app/public/vdp-form
     - cp -rv ui/dist app/public/vdp-form
-    - mkdir -p docker-image
     - export VERSION=$(cat version.txt)
-    - export DOCKER_TAG="vdp-form:${VERSION}"
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"${DOCKER_AUTH}\"}}}" > /kaniko/.docker/config.json
     - >-
-      /kaniko/executor --context .
+      /kaniko/executor --cache=true --context .
       --dockerfile docker/Dockerfile
-      --destination "${DOCKER_TAG}"
-      --no-push --no-push-cache
-      --tar-path docker-image/vdp-form-${VERSION}.tgz
+      --destination "${CONTAINER_BASE}:${CI_COMMIT_REF_SLUG}-${VERSION}"
+
+Publish npm:
+  stage: publish
+  tags:
+    - docker20
+  image: node:18-alpine
+  when: manual
+  only:
+    - tags
+  script:
+    - wget -qO- https://registry.npmjs.org/quasar-ui-vdp-form
+    - cd ui
+    - echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > .npmrc
+    - echo "//registry.npmjs.org/:username=zerodisclo" >> .npmrc
+    - npm publish
+    - cd ../app-extension
+    - echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > .npmrc
+    - echo "//registry.npmjs.org/:username=zerodisclo" >> .npmrc
+    - npm publish
+
+Publish Docker Hub:
+  stage: publish
+  tags:
+    - docker20
+  services:
+    - name: "docker:20-dind"
+      alias: docker
+  when: manual
+  only:
+    - tags
+  script:
+    - export VERSION=$(cat version.txt)
+    - export DOCKER_LOCAL_TAG="${CONTAINER_BASE}:${CI_COMMIT_REF_SLUG}-${VERSION}"
+    - export DOCKER_HUB_TAG="${DOCKER_HUB_BASE_TAG}:${VERSION}"
+    - export DOCKER_HUB_TAG_LATEST="${DOCKER_HUB_BASE_TAG}:latest"
+    - docker pull "${DOCKER_LOCAL_TAG}"
+    - echo "${DOCKER_HUB_PASSWORD}" | docker login -u "${DOCKER_HUB_LOGIN}" --password-stdin
+    - docker tag "${DOCKER_LOCAL_TAG}" "${DOCKER_HUB_TAG}"
+    - docker push "${DOCKER_HUB_TAG}"
+    - docker tag "${DOCKER_LOCAL_TAG}" "${DOCKER_HUB_TAG_LATEST}"
+    - docker push "${DOCKER_HUB_TAG_LATEST}"

@@ -2,8 +2,9 @@
 
 A web application to securely disclose vulnerabilities.
 
-[![npm](https://img.shields.io/npm/v/quasar-ui-vdp-form.svg?label=quasar-ui-vdp-form)](https://www.npmjs.com/package/quasar-ui-vdp-form/)
-[![npm](https://img.shields.io/npm/v/quasar-app-extension-vdp-form.svg?label=quasar-app-extension-vdp-form)](https://www.npmjs.com/package/quasar-app-extension-vdp-form/)
+[![docker](https://img.shields.io/docker/v/yeswehack/vdp-form?label=yeswehack%2Fvdp-form&logo=docker&sort=semver&style=flat-square)](https://hub.docker.com/r/yeswehack/vdp-form)
+[![npm](https://img.shields.io/npm/v/quasar-ui-vdp-form?label=quasar-ui-vdp-form&logo=npm&style=flat-square)](https://www.npmjs.com/package/quasar-ui-vdp-form/)
+[![npm](https://img.shields.io/npm/v/quasar-app-extension-vdp-form?label=quasar-app-extension-vdp-form&logo=npm&style=flat-square)](https://www.npmjs.com/package/quasar-app-extension-vdp-form/)
 
 Compatible with [Quasar](https://quasar.dev/) UI v2 and [Vue](https://vuejs.org/) 3.
 
