@@ -2,6 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/quasar-ui-vdp-form?label=quasar-ui-vdp-form&logo=npm&style=flat-square)](https://www.npmjs.com/package/quasar-ui-vdp-form/)
 [![npm](https://img.shields.io/npm/dt/quasar-ui-vdp-form?style=flat-square)](https://www.npmjs.com/package/quasar-ui-vdp-form)
+[![github](https://img.shields.io/badge/GitHub-yeswehack%2Fvdp--form-informational?logo=github&style=flat-square)](https://github.com/yeswehack/vdp-form)
 
 **Compatible with Quasar UI v2 and Vue 3**.
 
