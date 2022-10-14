@@ -7,10 +7,10 @@
   "main": "src/index.js",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/yeswehack/vdp-form"
   },
-  "bugs": "",
-  "homepage": "",
+  "bugs": "https://github.com/yeswehack/vdp-form/issues",
+  "homepage": "https://github.com/yeswehack/vdp-form",
   "dependencies": {
     "quasar-ui-vdp-form": "^0.1.2"
   },

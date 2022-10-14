@@ -20,10 +20,10 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/yeswehack/vdp-form"
   },
-  "bugs": "",
-  "homepage": "",
+  "bugs": "https://github.com/yeswehack/vdp-form/issues",
+  "homepage": "https://github.com/yeswehack/vdp-form",
   "devDependencies": {
     "@quasar/app-vite": "^1.0.0",
     "@quasar/extras": "^1.0.0",
