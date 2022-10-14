@@ -1,4 +1,90 @@
+import { Request as ExpressRequest, Response as ExpressResponse } from 'express';
 import Jimp from 'jimp';
+import { encryptString, decryptString } from 'encrypt-string';
+import { getConfig as getBackendConfig } from '../config/backend';
+
+let store: CaptchaKeyStore;
+const getStore = () => {
+  if (!store) {
+    store = new CaptchaKeyStore(getBackendConfig().captchaExpirationMs);
+  }
+  return store;
+};
+
+const captchaRequestHandler = (request: ExpressRequest, response: ExpressResponse) =>
+  void (async () => {
+    const store = getStore();
+    store.clean();
+    response.writeHead(200, {
+      'Content-Type': 'application/json',
+    });
+    const captcha = new Captcha(
+      request.query.w ? Number.parseInt(request.query.w as string) : 200,
+      request.query.h ? Number.parseInt(request.query.h as string) : 56
+    );
+    const key = await encryptCaptchaKey(captcha.getValue());
+    store.store(key);
+
+    response.write(
+      JSON.stringify({
+        key: key,
+        url: await captcha.getDataURL(),
+        width: captcha.getWidth(),
+        height: captcha.getHeight(),
+      })
+    );
+    response.end();
+  })();
+
+const encryptCaptchaKey = async (value: string) => await encryptString(value, getBackendConfig().captchaCryptPassword);
+const decryptCaptchaKey = async (key: string) => await decryptString(key, getBackendConfig().captchaCryptPassword);
+const validateCaptcha = async (key: string, value: string) => {
+  let decryptedCaptcha;
+  try {
+    decryptedCaptcha = await decryptCaptchaKey(key);
+  } catch (e) {
+    throw new Error(`Captcha error (${e as string})!`);
+  }
+  if (decryptedCaptcha.toLowerCase() != value.toLowerCase()) {
+    throw new Error('Captcha error!');
+  }
+  getStore().burn(key);
+};
+
+class CaptchaKeyStore {
+  readonly expirationMs: number;
+  #captchaExpirations: { [key: string]: Date };
+
+  constructor(expirationMs = 1000 * 60 * 60) {
+    this.#captchaExpirations = {};
+    this.expirationMs = expirationMs;
+  }
+
+  store(key: string) {
+    this.#captchaExpirations[key] = new Date(this.#getCurrentDate().getTime() + this.expirationMs);
+  }
+
+  burn(key: string) {
+    this.clean();
+    if (!(key in this.#captchaExpirations)) {
+      throw new Error('Invalid captcha');
+    }
+    delete this.#captchaExpirations[key];
+  }
+
+  clean() {
+    const now = this.#getCurrentDate();
+    for (const [key, expiration] of Object.entries(this.#captchaExpirations)) {
+      if (expiration < now) {
+        delete this.#captchaExpirations[key];
+      }
+    }
+  }
+
+  #getCurrentDate() {
+    return new Date();
+  }
+}
 
 class Captcha {
   #value = '';
@@ -107,4 +193,4 @@ const randomText = (length: number) =>
     .substring(0, length)
     .toUpperCase();
 
-export default Captcha;
+export { captchaRequestHandler, decryptCaptchaKey, validateCaptcha };

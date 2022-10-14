@@ -1,4 +1,5 @@
 reports/*.json
+build
 
 # Logs
 logs

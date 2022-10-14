@@ -1,4 +1,4 @@
-image: docker:18.09
+image: docker:20
 
 variables:
   GIT_DEPTH: 0
@@ -7,8 +7,9 @@ variables:
 stages:
   - check
   - build
+  - build-docker
 
-lint:
+.lint:
   stage: check
   tags:
     - docker20
@@ -18,6 +19,18 @@ lint:
       - ui/node_modules
   script:
     - cd ui && yarn install && yarn lint
+
+check-versions:
+  stage: check
+  tags:
+    - docker20
+  artifacts:
+    paths:
+      - version.txt
+  script:
+    - apk update && apk add jq
+    - jq -r '.version' ui/package.json > version.txt
+    - diff -u version.txt <(jq -r '.version' app-extension/package.json) || exit 1
 
 build-ui:
   stage: build
@@ -33,3 +46,27 @@ build-ui:
     paths:
       - ui/dist
     expire_in: 1 day
+
+build-docker:
+  stage: build-docker
+  tags:
+    - docker20
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [ "" ]
+  artifacts:
+    paths:
+      - docker-image
+  script:
+    # there's an issue with kaniko with multi-stage builds and symlinks
+    - rm -rf app/public/vdp-form
+    - cp -rv ui/dist app/public/vdp-form
+    - mkdir -p docker-image
+    - export VERSION=$(cat version.txt)
+    - export DOCKER_TAG="vdp-form:${VERSION}"
+    - >-
+      /kaniko/executor --context .
+      --dockerfile docker/Dockerfile
+      --destination "${DOCKER_TAG}"
+      --no-push --no-push-cache
+      --tar-path docker-image/vdp-form-${VERSION}.tgz
