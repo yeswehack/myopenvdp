@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{{title}}</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="{{&fonts.url.css}}" rel="stylesheet" type="text/css">
+    <link href="{{&quasar.url.css}}" rel="stylesheet" type="text/css" />
+    <link href="/vdp-form/index.css" rel="stylesheet" type="text/css" />
+    {{> head}}
+  </head>
+  <body>
+    <script src="{{&vue.url.js}}"></script>
+    <script src="{{&quasar.url.js}}"></script>
+    <script src="/vdp-form/index.umd.js"></script>
+    {{> body/before-form}}
+    <div id="q-app">
+      <div class="col">
+        <vdp-form
+          :pgp-key="pgpKeys"
+          :attachment-max-size-bytes="{{&form.attachment.max-size-bytes}}"
+          :attachment-allowed-extensions="extensions"
+          :captcha-provider="captchaProvider"
+          :logs-auto-scroll="{{&form.logs.auto-scroll}}"
+          :logs-timestamp-format="'{{&form.logs.timestamp-format}}'"
+          :notifications-position="'{{&form.notifications-position}}'"
+          :success-notification-position="'{{&form.success-notification-position}}'"
+          :errors-notification-position="'{{&form.errors-notification-position}}'"
+          :disclosure-policy-notification-position="'{{&form.disclosure-policy-notification-position}}'"
+          @submit="submit"
+        ></vdp-form>
+      </div>
+    </div>
+    {{> body/after-form}}
+    <script>
+    const app = Vue.createApp({
+      setup () {
+        let captchaProvider;
+        if ({{form.captcha-enabled}}) {
+          captchaProvider = async () => {
+            return await fetch('/api/captcha?w=200&h=56').then((response) => response.json());
+          };
+        } else {
+          captchaProvider = null;
+        }
+        return {
+          captchaProvider: captchaProvider,
+          submit: (payload, success, failure) => {
+            const body = new FormData();
+            body.append('captcha', JSON.stringify(payload.captcha));
+            body.append('report', JSON.stringify(payload.report));
+            const config = {
+              method: 'POST',
+              body,
+            };
+            fetch(captchaProvider ? '/api/upload/captcha' : '/api/upload', config)
+              .then(async (response) => {
+                if (!response.ok) {
+                  throw await response.text();
+                }
+              })
+              .then(() => success('Thanks for your report submission!'))
+              .catch((reason) => failure(reason));
+          },
+          version: vdpForm.version,
+          extensions: '{{&form.attachment.allowed-extensions}}'.split(' '),
+          pgpKeys: [
+            // {{#form.pgp-keys}}
+            {
+              name: '{{name}}',
+              key: `{{&key}}`,
+            },
+            // {{/form.pgp-keys}}
+          ],
+        };
+      },
+      computed: {
+        darkMode: {
+          get: () => Quasar.Dark.isActive,
+          set: (value) => Quasar.Dark.set(value),
+        },
+      },
+    });
+    app.use(Quasar, {
+      config: {
+        dark: false,
+      },
+    });
+    app.use(vdpForm);
+    app.mount('#q-app');
+  </script>
+  {{> body/after-script}}
+  </body>
+</html>

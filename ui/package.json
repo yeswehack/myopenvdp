@@ -1,6 +1,6 @@
 {
   "name": "quasar-ui-vdp-form",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "author": "project@yeswehack.com",
   "description": "A form to anonymously disclose vulnerabilities",
   "license": "MIT",
@@ -13,11 +13,10 @@
     "dev:ios": "echo 'Entering ./dev' && cd dev && yarn install && yarn 'dev:ios'",
     "dev:android": "echo 'Entering ./dev' && cd dev && yarn install && yarn 'dev:android'",
     "dev:electron": "echo 'Entering ./dev' && cd dev && yarn install && yarn 'dev:electron'",
-    "dev:backend": "cd dev-backend && yarn install && yarn dev",
     "build": "node build/index.mjs",
     "mkdocs": "node build/script.docs.mjs",
     "lint": "$(yarn bin eslint) --ext .js,.ts,.vue ./src && echo 'Entering ./dev' && cd dev && yarn install && yarn lint",
-    "format": "$(yarn bin prettier) --write \"./{src,build}/**/*.{js,mjs,ts,vue,scss,html,md,json}\" --ignore-path .gitignore && echo 'Entering ./dev' && cd dev && yarn install && yarn format && cd .. && echo 'Entering ./dev-backend' && cd dev-backend && yarn install && yarn format"
+    "format": "$(yarn bin prettier) --write \"./{src,build}/**/*.{js,mjs,ts,vue,scss,html,md,json}\" --ignore-path .gitignore && echo 'Entering ./dev' && cd dev && yarn install && yarn format"
   },
   "repository": {
     "type": "git",

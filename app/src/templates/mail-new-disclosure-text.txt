@@ -1,0 +1,8 @@
+Hello,
+
+A new vulnerability has been disclosed:
+- Report Title: {{title}}
+- Product: {{product}}
+- CVSS Score: {{cvss_score}}
+
+Decrypt attachment "report.zip.enc" with your PGP key to obtain a ZIP file containing more details about the report.

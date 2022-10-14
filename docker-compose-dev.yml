@@ -1,0 +1,115 @@
+version: "3.9"
+
+services:
+
+  traefik:
+    image: traefik:v2.8
+    container_name: traefik
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock:ro
+    - ./docker/traefik/traefik.yaml:/etc/traefik/traefik.yaml
+    - ./docker/traefik/cert/:/certs/
+    ports:
+    - 8081:8081
+    - 443:443
+    - 9091:9091
+    healthcheck:
+      test:
+      - CMD
+      - traefik
+      - healthcheck
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+    - vdp-form
+
+  ui:
+    image: node:16
+    working_dir: /ui
+    volumes:
+    ## Main UI
+    - ./ui/src:/ui/src
+    - ./ui/.eslintrc.js:/ui/.eslintrc.js
+    - ./ui/package.json:/ui/package.json
+    - ./ui/tsconfig.json:/ui/tsconfig.json
+    - ./ui/yarn.lock:/ui/yarn.lock
+    ## Dev
+    - ./ui/dev/cert:/ui/dev/cert
+    - ./ui/dev/public:/ui/dev/public
+    - ./ui/dev/src:/ui/dev/src
+    - ./ui/dev/.eslintignore:/ui/dev/.eslintignore
+    - ./ui/dev/.eslintrc.js:/ui/dev/.eslintrc.js
+    - ./ui/dev/index.html:/ui/dev/index.html
+    - ./ui/dev/package.json:/ui/dev/package.json
+    - ./ui/dev/postcss.config.js:/ui/dev/postcss.config.js
+    - ./ui/dev/quasar.config.js:/ui/dev/quasar.config.js
+    - ./ui/dev/tsconfig.json:/ui/dev/tsconfig.json
+    - ./ui/dev/yarn.lock:/ui/dev/yarn.lock
+    command: sh -c 'yarn install && yarn dev --port=8081'
+    networks:
+    - vdp-form
+    labels:
+      service.name: vdp-form-ui
+      traefik.enable: true
+      traefik.http.routers.vdp-form-ui.rule: Host(`vdp-form-ui.localhost`)
+      traefik.http.routers.vdp-form-ui.entrypoints: websecure
+      traefik.http.routers.vdp-form-ui.tls: true
+      traefik.http.services.vdp-form-ui.loadbalancer.server.port: 8081
+    depends_on:
+      traefik:
+        condition: service_healthy
+
+  app:
+    image: node:16
+    working_dir: /app
+    hostname: vdp-form-app
+    volumes:
+    - ./app/index.html:/app/index.html
+    - ./app/public:/app/public
+    - ./app/src:/app/src
+    - ./app/views:/app/views
+    - ./app/package.json:/app/package.json
+    - ./app/tsconfig.json:/app/tsconfig.json
+    - ./app/vite.config.ts:/app/vite.config.ts
+    - ./app/yarn.lock:/app/yarn.lock
+    - ./docker/app/backend/nodemailer.json:/app/backend/nodemailer.json
+    - ./docker/app/frontend/pgpkeys:/app/frontend/pgpkeys
+    - ./ui:/ui
+    environment:
+    - BACKEND_HTTP_ACCESS_CONTROL_ALLOW_ORIGIN=*
+    - BACKEND_MAIL_CONFIG_FILE=/app/backend/nodemailer.json
+    - BACKEND_CAPTCHA_CRYPT_PASSWORD=P4$$sw0Rd!
+    - FRONTEND_FORM_PGP_KEYS_PATH=/app/frontend/pgpkeys
+    command: sh -c 'yarn && yarn dev --host --port=8082'
+    networks:
+    - vdp-form
+    labels:
+      service.name: vdp-form-app
+      traefik.enable: true
+      traefik.http.routers.vdp-form-app.rule: Host(`vdp-form-app.localhost`)
+      traefik.http.routers.vdp-form-app.entrypoints: websecure
+      traefik.http.routers.vdp-form-app.tls: true
+      traefik.http.services.vdp-form-app.loadbalancer.server.port: 8082
+    depends_on:
+      traefik:
+        condition: service_healthy
+
+  mail:
+    image: dockage/mailcatcher
+    command: ["mailcatcher", "-f", "--ip", "0.0.0.0", "--no-quit"]
+    networks:
+    - vdp-form
+    labels:
+      service.name: vdp-form-mail
+      traefik.enable: true
+      traefik.http.routers.vdp-form-mail.rule: Host(`vdp-form-mail.localhost`)
+      traefik.http.routers.vdp-form-mail.entrypoints: websecure
+      traefik.http.routers.vdp-form-mail.tls: true
+      traefik.http.services.vdp-form-mail.loadbalancer.server.port: 1080
+    depends_on:
+      traefik:
+        condition: service_healthy
+
+networks:
+  vdp-form:

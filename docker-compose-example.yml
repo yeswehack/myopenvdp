@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+
+  example-app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    hostname: vdp-form-example-app
+    ports:
+    - 3001:3001
+    volumes:
+    - ./docker/app/backend/nodemailer.json:/app/backend/nodemailer.json
+    - ./docker/app/frontend/pgpkeys:/app/frontend/pgpkeys
+    environment:
+    - PORT=3001
+    - BACKEND_HTTP_ACCESS_CONTROL_ALLOW_ORIGIN=*
+    - BACKEND_MAIL_CONFIG_FILE=/app/backend/nodemailer.json
+    - BACKEND_CAPTCHA_CRYPT_PASSWORD=P4$$sw0Rd!
+    - FRONTEND_FORM_PGP_KEYS_PATH=/app/frontend/pgpkeys
+    networks:
+    - vdp-form-example
+
+networks:
+  vdp-form-example:
