@@ -2,7 +2,14 @@
 # yarn lockfile v1
 
 
-quasar-ui-vdp-form@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/quasar-ui-vdp-form/-/quasar-ui-vdp-form-0.0.1.tgz#65bb267872506c214f6bd06db66539f5bb43bae2"
-  integrity sha512-SSHAdlJ7Xyp79Dd0VcClLJbiT5/X+R4l3U2ChND15xgoMwnya0DTo5q/t7rYVWLf6De3Z9TUrCNX4fnM6D1cnA==
+dateformat@^5.0.3:
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-5.0.3.tgz#fe2223eff3cc70ce716931cb3038b59a9280696e"
+  integrity sha512-Kvr6HmPXUMerlLcLF+Pwq3K7apHpYmGDVqrxcDasBg86UcKeTSNWbEzU8bwdXnxnR44FtMhJAxI4Bov6Y/KUfA==
+
+quasar-ui-vdp-form@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/quasar-ui-vdp-form/-/quasar-ui-vdp-form-0.1.1.tgz#9bad9afda7f77c6f153ca40627e5d45f704183a6"
+  integrity sha512-23FFCuov9BGwQjIXxyoKyFH4fuTMOIKhK0SafHgoKfjFDISUeTzNrY3p5FI2awDL/OetmEpKugPTaMyq1xr/nA==
+  dependencies:
+    dateformat "^5.0.3"

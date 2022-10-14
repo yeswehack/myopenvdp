@@ -1,7 +1,7 @@
 # Component VdpForm
 
-[![npm](https://img.shields.io/npm/v/quasar-ui-vdp-form.svg?label=quasar-ui-vdp-form)](https://www.npmjs.com/package/quasar-ui-vdp-form)
-[![npm](https://img.shields.io/npm/dt/quasar-ui-vdp-form.svg)](https://www.npmjs.com/package/quasar-ui-vdp-form)
+[![npm](https://img.shields.io/npm/v/quasar-ui-vdp-form?label=quasar-ui-vdp-form&logo=npm&style=flat-square)](https://www.npmjs.com/package/quasar-ui-vdp-form/)
+[![npm](https://img.shields.io/npm/dt/quasar-ui-vdp-form?style=flat-square)](https://www.npmjs.com/package/quasar-ui-vdp-form)
 
 **Compatible with Quasar UI v2 and Vue 3**.
 
@@ -264,15 +264,6 @@ $ yarn dev
 # start dev in UMD mode
 $ yarn dev:umd
 ```
-
-## Docker
-To ease development, a Docker stack is provided which includes a simple backend that allows saving reports in local files.
-
-```bash
-$ docker-compose up -d
-```
-
-Then head to [https://vdp-form-ui.localhost](https://vdp-form-ui.localhost).
 
 # Building package
 ```bash

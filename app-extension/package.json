@@ -1,6 +1,6 @@
 {
   "name": "quasar-app-extension-vdp-form",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A form to anonymously disclose vulnerabilities",
   "author": "project@yeswehack.com",
   "license": "MIT",
@@ -12,7 +12,7 @@
   "bugs": "",
   "homepage": "",
   "dependencies": {
-    "quasar-ui-vdp-form": "^0.1.1"
+    "quasar-ui-vdp-form": "^0.1.2"
   },
   "engines": {
     "node": ">= 8.9.0",
