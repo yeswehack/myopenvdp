@@ -21,4 +21,4 @@ quasar ext remove vdp-form
 See [/ui](../ui) for detailed usage.
 
 # License
-MIT (c) YesWeHack project@yeswehack.com
+[MIT](https://raw.githubusercontent.com/yeswehack/vdp-form/master/LICENSE) (c) [YesWeHack](https://www.yeswehack.com/) project@yeswehack.com

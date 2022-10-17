@@ -275,4 +275,4 @@ $ yarn build
 in the `ui/dev/src/pages` you can add Vue files to test your component/directive. When using `yarn dev` to build the UI, any pages in that location will automatically be picked up by dynamic routing and added to the test page.
 
 # License
-MIT (c) YesWeHack project@yeswehack.com
+[MIT](https://raw.githubusercontent.com/yeswehack/vdp-form/master/LICENSE) (c) [YesWeHack](https://www.yeswehack.com/) project@yeswehack.com

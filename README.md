@@ -9,7 +9,7 @@ A web application to securely disclose vulnerabilities.
 
 Compatible with [Quasar](https://quasar.dev/) UI v2 and [Vue](https://vuejs.org/) 3.
 
-[![VdpForm](ui/docs/screenshot-preview.png)](ui/docs/screenshot.png)
+[![VdpForm](https://raw.githubusercontent.com/yeswehack/vdp-form/master/ui/docs/screenshot-preview.png)](https://raw.githubusercontent.com/yeswehack/vdp-form/master/ui/docs/screenshot.png)
 
 # Structure
 * [/app](app) - Ready-to-use VDP Form application
@@ -28,11 +28,6 @@ Compatible with [Quasar](https://quasar.dev/) UI v2 and [Vue](https://vuejs.org/
 
 ## Docker image
 
-### Build
-```shell
-docker build -t my-vdp -f docker/Dockerfile .
-```
-
 ### Run
 ```shell
 docker run \
@@ -40,9 +35,14 @@ docker run \
     -v $(pwd)/config/frontend/pgpkeys:/config/pgpkeys \
     -e BACKEND_MAIL_CONFIG_FILE=/config/nodemailer.json \
     -e FRONTEND_FORM_PGP_KEYS_PATH=/config/pgpkeys \
-    -p3000:3000 my-vdp
+    -p3000:3000 yeswehack/vdp-form
 ```
 Then go to http://localhost:3000.
+
+### Build
+```shell
+docker build -t my-vdp -f docker/Dockerfile .
+```
 
 ## Environment variables:
 
@@ -106,6 +106,8 @@ See [Nodemail SMTP transport](https://nodemailer.com/smtp/) for more configurati
 
 In order to encrypt vulnerability reports, you must provide the path to a directory that contains at least one file containing a PGP public key via the `BACKEND_MAIL_CONFIG_FILE` environment variable.
 
+See [this excellent example of how to generate a GPG key](https://docs.github.com/en/authentication/managing-commit-signature-verification/generating-a-new-gpg-key).
+
 If there are multiple files in the directory, their full name, with extension, will be used to show in a drop-down list in the form.
 For example, for a directory with the following structure:
 ```
@@ -130,4 +132,4 @@ rCHIDOh1bOdGsOYVS9BaSuhPtwf/zYAC9VA+mI2qzQJji7thrBsx
 ```
 
 # License
-MIT (c) YesWeHack project@yeswehack.com
+[MIT](https://raw.githubusercontent.com/yeswehack/vdp-form/master/LICENSE) (c) [YesWeHack](https://www.yeswehack.com/) project@yeswehack.com
