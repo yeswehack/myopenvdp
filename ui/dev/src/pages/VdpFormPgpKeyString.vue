@@ -77,7 +77,7 @@ function logSubmit(
     method: 'POST',
     body,
   };
-  fetch('https://vdp-form-backend.localhost/api/upload', config)
+  fetch('https://vdp-form-app.localhost/api/upload', config)
     .then(async (response) => {
       if (!response.ok) {
         throw await response.text();

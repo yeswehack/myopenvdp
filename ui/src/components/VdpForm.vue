@@ -3,6 +3,7 @@
     ref="vdpForm"
     greedy
     class="col column"
+    @submit="submit"
   >
     <div
       ref="htmlFormRef"
@@ -320,7 +321,7 @@
               :label="tr('sendReportLabel')"
               color="primary"
               :disabled="submitting"
-              @click="submit"
+              type="submit"
             />
           </div>
           <div class="row">
