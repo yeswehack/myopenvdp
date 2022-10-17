@@ -22,7 +22,7 @@ import { ref } from 'vue';
 import { VdpForm } from 'ui';
 async function captchaProvider() {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return await fetch('https://vdp-form-backend.localhost/api/captcha?w=200&h=56').then((response) => response.json());
+  return await fetch('https://vdp-form-app.localhost/api/captcha?w=200&h=56').then((response) => response.json());
 }
 const extensions = ref('jpeg jpg png gif tiff bmp txt json pdf'.split(' '));
 const pgpKeys = ref([
@@ -133,7 +133,7 @@ function logSubmit(
     method: 'POST',
     body,
   };
-  fetch('https://vdp-form-backend.localhost/api/upload/captcha', config)
+  fetch('https://vdp-form-app.localhost/api/upload/captcha', config)
     .then(async (response) => {
       if (!response.ok) {
         throw await response.text();

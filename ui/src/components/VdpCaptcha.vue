@@ -19,6 +19,7 @@
       <div>
         <vdp-button
           icon="refresh"
+          type="button"
           @click="refreshCaptcha"
         />
       </div>
