@@ -24,26 +24,6 @@ Compatible with [Quasar](https://quasar.dev/) UI v2 and [Vue](https://vuejs.org/
 - You receive the report via e-mail
 - The Internet is safer!
 
-# Usage
-
-## Docker image
-
-### Run
-```shell
-docker run \
-    -v $(pwd)/config/backend/nodemailer.json:/config/nodemailer.json \
-    -v $(pwd)/config/frontend/pgpkeys:/config/pgpkeys \
-    -e BACKEND_MAIL_CONFIG_FILE=/config/nodemailer.json \
-    -e FRONTEND_FORM_PGP_KEYS_PATH=/config/pgpkeys \
-    -p3000:3000 yeswehack/vdp-form
-```
-Then go to http://localhost:3000.
-
-### Build
-```shell
-docker build -t my-vdp -f docker/Dockerfile .
-```
-
 # Setup
 
 ## Required: SMTP configuration
@@ -97,13 +77,33 @@ rCHIDOh1bOdGsOYVS9BaSuhPtwf/zYAC9VA+mI2qzQJji7thrBsx
 -----END PGP PUBLIC KEY BLOCK-----
 ```
 
-## Optional: customize your form and emails
+# Usage
+
+## Docker image
+
+### Run
+```shell
+docker run \
+    -v $(pwd)/config/backend/nodemailer.json:/config/nodemailer.json \
+    -v $(pwd)/config/frontend/pgpkeys:/config/pgpkeys \
+    -e BACKEND_MAIL_CONFIG_FILE=/config/nodemailer.json \
+    -e FRONTEND_FORM_PGP_KEYS_PATH=/config/pgpkeys \
+    -p3000:3000 yeswehack/vdp-form
+```
+Then go to http://localhost:3000.
+
+### Build
+```shell
+docker build -t my-vdp -f docker/Dockerfile .
+```
+
+# Customize mail and webpage
 
 Advanced configuration can be achieved by setting the following environment variables:
 
-### Backend
+## Backend
 - `PORT`: HTTP port of the application (default: `3000`)
-- `BACKEND_MAIL_CONFIG_FILE`: (**required**) path to the [SMTP configuration file](#smtp-configuration-file)
+- `BACKEND_MAIL_CONFIG_FILE`: (**required**) path to the [SMTP configuration file](#required-smtp-configuration)
 - `BACKEND_HTTP_ACCESS_CONTROL_ALLOW_ORIGIN`: value of the HTTP header `Access-Control-Allow-Origin` for all api response (default: `*`)
 - `BACKEND_CAPTCHA_ENABLE`: boolean (`true`/`false`) flag to enable the form captcha (default: `true`)
 - `BACKEND_CAPTCHA_CRYPT_PASSWORD`: password for captcha keys encryption (default: random UUID4, changes at every start)
@@ -114,8 +114,8 @@ Advanced configuration can be achieved by setting the following environment vari
 - `BACKEND_MAIL_REPORT_FROM`: value of the "from" field of the e-mails sent when a vulnerability is disclosed (default: `vdp-form@[hostname]`)
 - `BACKEND_MAIL_REPORT_TO`: recipient of the e-mails sent when a vulnerability is disclosed (default: `security@[hostname]`)
 
-### Frontend
-- `FRONTEND_FORM_PGP_KEYS_PATH`: (**required**) path to the directory containing the [PGP public keys](#pgp-keys) used for encrypting the vulnerability disclosures
+## Frontend
+- `FRONTEND_FORM_PGP_KEYS_PATH`: (**required**) path to the directory containing the [PGP public keys](#required-pgp-keys) used for encrypting the vulnerability disclosures
 - `FRONTEND_VUE_URL_JS`: url of [Vue.js](https://vuejs.org) global JavaScript build file (default: `https://cdn.jsdelivr.net/npm/vue@3.2.39/dist/vue.global.prod.js`)
 - `FRONTEND_QUASAR_URL_JS`: url of [Quasar](https://quasar.dev) global JavaScript build file (default: `https://cdn.jsdelivr.net/npm/quasar@2.8.4/dist/quasar.umd.prod.js`)
 - `FRONTEND_QUASAR_URL_CSS`: url of [Quasar](https://quasar.dev) global CSS build file (default: `https://cdn.jsdelivr.net/npm/quasar@2.8.4/dist/quasar.prod.css`)
