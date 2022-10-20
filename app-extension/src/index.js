@@ -15,15 +15,15 @@ function extendConf (conf, api) {
   }
 
   // register our boot file
-  conf.boot.push('~quasar-app-extension-vdp-form/src/boot/register.js')
+  conf.boot.push('~quasar-app-extension-my-open-vdp/src/boot/register.js')
 
   // make sure app extension files & ui package gets transpiled
   if (api.hasVite !== true) {
-    conf.build.transpileDependencies.push(/quasar-app-extension-vdp-form[\\/]src/)
+    conf.build.transpileDependencies.push(/quasar-app-extension-my-open-vdp[\\/]src/)
   }
 
   // make sure the stylesheet goes through webpack to avoid SSR issues
-  conf.css.push('~quasar-ui-vdp-form/dist/style.css')
+  conf.css.push('~quasar-ui-my-open-vdp/dist/style.css')
 }
 
 module.exports = function (api) {
@@ -40,7 +40,7 @@ module.exports = function (api) {
   }
 
   // Uncomment the line below if you provide a JSON API for your component
-  api.registerDescribeApi('VdpForm', '~quasar-ui-vdp-form/src/components/VdpForm.json')
+  api.registerDescribeApi('VdpForm', '~quasar-ui-my-open-vdp/src/components/VdpForm.json')
 
   // We extend /quasar.conf.js
   api.extendQuasarConf(extendConf)

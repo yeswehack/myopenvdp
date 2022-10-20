@@ -16,7 +16,7 @@ await build([
   {
     lib: {
       entry: pathResolve('../src/index.umd.js'),
-      name: 'vdpForm',
+      name: 'myOpenVDP',
       fileName: () => 'index.umd.js',
       formats: ['umd'],
     },
@@ -25,7 +25,7 @@ await build([
   {
     lib: {
       entry: pathResolve('../src/index.umd.js'),
-      name: 'vdpForm',
+      name: 'myOpenVDP',
       fileName: () => 'index.umd.min.js',
       formats: ['umd'],
     },
@@ -34,7 +34,7 @@ await build([
   {
     lib: {
       entry: pathResolve('../src/index.esm.js'),
-      name: 'vdpForm',
+      name: 'myOpenVDP',
       fileName: () => 'index.esm.js',
       formats: ['es'],
     },
@@ -43,7 +43,7 @@ await build([
   {
     lib: {
       entry: pathResolve('../src/index.common.js'),
-      name: 'vdpForm',
+      name: 'myOpenVDP',
       fileName: () => 'index.common.js',
       formats: ['cjs'],
     },

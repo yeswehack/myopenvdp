@@ -22,7 +22,7 @@ providers:
   docker:
     exposedByDefault: false
     watch: true
-    constraints: "LabelRegex(`service.name`,`vdp-form-.+`)"
+    constraints: "LabelRegex(`service.name`,`my-open-vdp-.+`)"
   file:
     fileName: /etc/traefik/traefik.yaml
     watch: true

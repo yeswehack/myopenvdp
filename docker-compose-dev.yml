@@ -22,7 +22,7 @@ services:
       timeout: 5s
       retries: 3
     networks:
-    - vdp-form
+    - my-open-vdp
 
   ui:
     image: node:16
@@ -48,14 +48,14 @@ services:
     - ./ui/dev/yarn.lock:/ui/dev/yarn.lock
     command: sh -c 'yarn install && yarn dev --port=8081'
     networks:
-    - vdp-form
+    - my-open-vdp
     labels:
-      service.name: vdp-form-ui
+      service.name: my-open-vdp-ui
       traefik.enable: true
-      traefik.http.routers.vdp-form-ui.rule: Host(`vdp-form-ui.localhost`)
-      traefik.http.routers.vdp-form-ui.entrypoints: websecure
-      traefik.http.routers.vdp-form-ui.tls: true
-      traefik.http.services.vdp-form-ui.loadbalancer.server.port: 8081
+      traefik.http.routers.my-open-vdp-ui.rule: Host(`my-open-vdp-ui.localhost`)
+      traefik.http.routers.my-open-vdp-ui.entrypoints: websecure
+      traefik.http.routers.my-open-vdp-ui.tls: true
+      traefik.http.services.my-open-vdp-ui.loadbalancer.server.port: 8081
     depends_on:
       traefik:
         condition: service_healthy
@@ -63,7 +63,7 @@ services:
   app:
     image: node:16
     working_dir: /app
-    hostname: vdp-form-app
+    hostname: my-open-vdp-app
     volumes:
     - ./app/index.html:/app/index.html
     - ./app/public:/app/public
@@ -83,14 +83,14 @@ services:
     - FRONTEND_FORM_PGP_KEYS_PATH=/app/frontend/pgpkeys
     command: sh -c 'yarn && yarn dev --host --port=8082'
     networks:
-    - vdp-form
+    - my-open-vdp
     labels:
-      service.name: vdp-form-app
+      service.name: my-open-vdp-app
       traefik.enable: true
-      traefik.http.routers.vdp-form-app.rule: Host(`vdp-form-app.localhost`)
-      traefik.http.routers.vdp-form-app.entrypoints: websecure
-      traefik.http.routers.vdp-form-app.tls: true
-      traefik.http.services.vdp-form-app.loadbalancer.server.port: 8082
+      traefik.http.routers.my-open-vdp-app.rule: Host(`my-open-vdp-app.localhost`)
+      traefik.http.routers.my-open-vdp-app.entrypoints: websecure
+      traefik.http.routers.my-open-vdp-app.tls: true
+      traefik.http.services.my-open-vdp-app.loadbalancer.server.port: 8082
     depends_on:
       traefik:
         condition: service_healthy
@@ -99,17 +99,17 @@ services:
     image: dockage/mailcatcher
     command: ["mailcatcher", "-f", "--ip", "0.0.0.0", "--no-quit"]
     networks:
-    - vdp-form
+    - my-open-vdp
     labels:
-      service.name: vdp-form-mail
+      service.name: my-open-vdp-mail
       traefik.enable: true
-      traefik.http.routers.vdp-form-mail.rule: Host(`vdp-form-mail.localhost`)
-      traefik.http.routers.vdp-form-mail.entrypoints: websecure
-      traefik.http.routers.vdp-form-mail.tls: true
-      traefik.http.services.vdp-form-mail.loadbalancer.server.port: 1080
+      traefik.http.routers.my-open-vdp-mail.rule: Host(`my-open-vdp-mail.localhost`)
+      traefik.http.routers.my-open-vdp-mail.entrypoints: websecure
+      traefik.http.routers.my-open-vdp-mail.tls: true
+      traefik.http.services.my-open-vdp-mail.loadbalancer.server.port: 1080
     depends_on:
       traefik:
         condition: service_healthy
 
 networks:
-  vdp-form:
+  my-open-vdp:

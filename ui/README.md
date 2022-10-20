@@ -1,8 +1,8 @@
-# Component VdpForm
+# MyOpenVDP: Component VdpForm
 
-[![npm](https://img.shields.io/npm/v/quasar-ui-vdp-form?label=quasar-ui-vdp-form&logo=npm&style=flat-square)](https://www.npmjs.com/package/quasar-ui-vdp-form/)
-[![npm](https://img.shields.io/npm/dt/quasar-ui-vdp-form?style=flat-square)](https://www.npmjs.com/package/quasar-ui-vdp-form)
-[![github](https://img.shields.io/badge/GitHub-yeswehack%2Fvdp--form-informational?logo=github&style=flat-square)](https://github.com/yeswehack/vdp-form)
+[![npm](https://img.shields.io/npm/v/quasar-ui-my-open-vdp?label=quasar-ui-my-open-vdp&logo=npm&style=flat-square)](https://www.npmjs.com/package/quasar-ui-my-open-vdp/)
+[![npm](https://img.shields.io/npm/dt/quasar-ui-my-open-vdp?style=flat-square)](https://www.npmjs.com/package/quasar-ui-my-open-vdp)
+[![github](https://img.shields.io/badge/GitHub-yeswehack%2Fmy--open--vdp-informational?logo=github&style=flat-square)](https://github.com/yeswehack/my-open-vdp)
 
 **Compatible with Quasar UI v2 and Vue 3**.
 
@@ -35,8 +35,8 @@ Create and register a boot file:
 
 ```js
 import Vue from 'vue';
-import Plugin from 'quasar-ui-vdp-form';
-import 'quasar-ui-vdp-form/dist/index.css';
+import Plugin from 'quasar-ui-my-open-vdp';
+import 'quasar-ui-my-open-vdp/dist/index.css';
 
 Vue.use(Plugin);
 ```
@@ -44,10 +44,10 @@ Vue.use(Plugin);
 **OR**:
 
 ```html
-<style src="quasar-ui-vdp-form/dist/index.css"></style>
+<style src="quasar-ui-my-open-vdp/dist/index.css"></style>
 
 <script>
-import { Component as VdpForm } from 'quasar-ui-vdp-form';
+import { Component as VdpForm } from 'quasar-ui-my-open-vdp';
 
 export default {
 
@@ -63,8 +63,8 @@ export default {
 
 ```js
 import Vue from 'vue';
-import Plugin from 'quasar-ui-vdp-form';
-import 'quasar-ui-vdp-form/dist/index.css';
+import Plugin from 'quasar-ui-my-open-vdp';
+import 'quasar-ui-my-open-vdp/dist/index.css';
 
 Vue.use(Plugin);
 ```
@@ -72,10 +72,10 @@ Vue.use(Plugin);
 **OR**:
 
 ```html
-<style src="quasar-ui-vdp-form/dist/index.css"></style>
+<style src="quasar-ui-my-open-vdp/dist/index.css"></style>
 
 <script>
-import { Component as VdpForm } from 'quasar-ui-vdp-form';
+import { Component as VdpForm } from 'quasar-ui-my-open-vdp';
 
 export default {
 
@@ -89,23 +89,23 @@ export default {
 
 ## UMD variant
 
-Exports `window.vdp-form`.
+Exports `window.myOpenVDP`.
 
 Add the following tag(s) after the Quasar ones:
 
 ```html
 <head>
   <!-- AFTER the Quasar stylesheet tags: -->
-  <link href="https://cdn.jsdelivr.net/npm/quasar-ui-vdp-form/dist/index.min.css" rel="stylesheet" type="text/css">
+  <link href="https://cdn.jsdelivr.net/npm/quasar-ui-my-open-vdp/dist/index.min.css" rel="stylesheet" type="text/css">
 </head>
 <body>
   <!-- at end of body, AFTER Quasar script(s): -->
-  <script src="https://cdn.jsdelivr.net/npm/quasar-ui-vdp-form/dist/index.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/quasar-ui-my-open-vdp/dist/index.umd.min.js"></script>
 </body>
 ```
 If you need the RTL variant of the CSS, then go for the following (instead of the above stylesheet link):
 ```html
-<link href="https://cdn.jsdelivr.net/npm/quasar-ui-vdp-form/dist/index.rtl.min.css" rel="stylesheet" type="text/css">
+<link href="https://cdn.jsdelivr.net/npm/quasar-ui-my-open-vdp/dist/index.rtl.min.css" rel="stylesheet" type="text/css">
 ```
 
 # Component API
@@ -177,7 +177,7 @@ See [VdpForm.md Properties section](VdpForm.md#properties) for a more detailed d
 ></vdp-form>
 <script>
 async function captchaProvider() {
-  return await fetch('https://vdp-form-backend.localhost/api/captcha')
+  return await fetch('https://my-open-vdp-backend.localhost/api/captcha')
     .then((response) => response.json());
 }
 </script>
@@ -212,7 +212,7 @@ function onSubmit(
   body.append('report', JSON.stringify(payload.report));
   // post the data to the backend
   fetch(
-    'https://vdp-form-backend.localhost/api/upload',
+    'https://my-open-vdp-backend.localhost/api/upload',
     {
       method: 'POST',
       body,
@@ -275,4 +275,4 @@ $ yarn build
 in the `ui/dev/src/pages` you can add Vue files to test your component/directive. When using `yarn dev` to build the UI, any pages in that location will automatically be picked up by dynamic routing and added to the test page.
 
 # License
-[MIT](https://raw.githubusercontent.com/yeswehack/vdp-form/master/LICENSE) (c) [YesWeHack](https://www.yeswehack.com/) project@yeswehack.com
+[MIT](https://raw.githubusercontent.com/yeswehack/my-open-vdp/master/LICENSE) (c) [YesWeHack](https://www.yeswehack.com/) project@yeswehack.com

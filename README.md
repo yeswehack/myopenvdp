@@ -1,24 +1,24 @@
-# VDP Form
+# MyOpenVDP
 
 A web application to securely disclose vulnerabilities.
 
-[![docker](https://img.shields.io/docker/v/yeswehack/vdp-form?label=yeswehack%2Fvdp-form&logo=docker&sort=semver&style=flat-square)](https://hub.docker.com/r/yeswehack/vdp-form)
-[![npm](https://img.shields.io/npm/v/quasar-ui-vdp-form?label=quasar-ui-vdp-form&logo=npm&style=flat-square)](https://www.npmjs.com/package/quasar-ui-vdp-form/)
-[![npm](https://img.shields.io/npm/v/quasar-app-extension-vdp-form?label=quasar-app-extension-vdp-form&logo=npm&style=flat-square)](https://www.npmjs.com/package/quasar-app-extension-vdp-form/)
-[![github](https://img.shields.io/badge/GitHub-yeswehack%2Fvdp--form-informational?logo=github&style=flat-square)](https://github.com/yeswehack/vdp-form)
+[![docker](https://img.shields.io/docker/v/yeswehack/my-open-vdp?label=yeswehack%2Fmy-open-vdp&logo=docker&sort=semver&style=flat-square)](https://hub.docker.com/r/yeswehack/my-open-vdp)
+[![npm](https://img.shields.io/npm/v/quasar-ui-my-open-vdp?label=quasar-ui-my-open-vdp&logo=npm&style=flat-square)](https://www.npmjs.com/package/quasar-ui-my-open-vdp/)
+[![npm](https://img.shields.io/npm/v/quasar-app-extension-my-open-vdp?label=quasar-app-extension-my-open-vdp&logo=npm&style=flat-square)](https://www.npmjs.com/package/quasar-app-extension-my-open-vdp/)
+[![github](https://img.shields.io/badge/GitHub-yeswehack%2Fmy--open--vdp-informational?logo=github&style=flat-square)](https://github.com/yeswehack/my-open-vdp)
 
 Compatible with [Quasar](https://quasar.dev/) UI v2 and [Vue](https://vuejs.org/) 3.
 
-[![VdpForm](https://raw.githubusercontent.com/yeswehack/vdp-form/master/ui/docs/screenshot-preview.png)](https://raw.githubusercontent.com/yeswehack/vdp-form/master/ui/docs/screenshot.png)
+[![my-open-vdp](https://raw.githubusercontent.com/yeswehack/my-open-vdp/master/ui/docs/screenshot-preview.png)](https://raw.githubusercontent.com/yeswehack/my-open-vdp/master/ui/docs/screenshot.png)
 
 # Structure
-* [/app](app) - Ready-to-use VDP Form application
+* [/app](app) - Ready-to-use MyOpenVDP application
 * [/ui](ui) - standalone npm package
 * [/app-extension](app-extension) - Quasar app extension
 
 # How it works
 - Someone finds a vulnerability or a security bug on your website or product
-- They go to your VDP Form application
+- They go to your MyOpenVDP application
 - They describe the vulnerability
 - Their report is encrypted in their browser
 - You receive the report via e-mail
@@ -88,7 +88,7 @@ docker run \
     -v $(pwd)/config/frontend/pgpkeys:/config/pgpkeys \
     -e BACKEND_MAIL_CONFIG_FILE=/config/nodemailer.json \
     -e FRONTEND_FORM_PGP_KEYS_PATH=/config/pgpkeys \
-    -p3000:3000 yeswehack/vdp-form
+    -p3000:3000 yeswehack/my-open-vdp
 ```
 Then go to http://localhost:3000.
 
@@ -111,7 +111,7 @@ Advanced configuration can be achieved by setting the following environment vari
 - `BACKEND_MAIL_REPORT_TEMPLATE_TEXT_FILE`: path to the file containing the template for the HTML version of the e-mails sent when a vulnerability is disclosed ([see default](app/src/templates/mail-new-disclosure-html.txt))
 - `BACKEND_MAIL_REPORT_TEMPLATE_HTML_FILE`: path to the file containing the template for the plain-text version of the e-mails sent when a vulnerability is disclosed ([see default](app/src/templates/mail-new-disclosure-text.txt))
 - `BACKEND_MAIL_REPORT_SUBJECT_TEMPLATE`: subject of the e-mails sent when a vulnerability is disclosed (default: `New Vulnerability Disclosure`)
-- `BACKEND_MAIL_REPORT_FROM`: value of the "from" field of the e-mails sent when a vulnerability is disclosed (default: `vdp-form@[hostname]`)
+- `BACKEND_MAIL_REPORT_FROM`: value of the "from" field of the e-mails sent when a vulnerability is disclosed (default: `my-open-vdp@[hostname]`)
 - `BACKEND_MAIL_REPORT_TO`: recipient of the e-mails sent when a vulnerability is disclosed (default: `security@[hostname]`)
 
 ## Frontend
@@ -134,4 +134,4 @@ Advanced configuration can be achieved by setting the following environment vari
 - `FRONTEND_PARTIAL_BODY_AFTER_SCRIPT`: path to an HTML file that will be rendered in the `<body/>` element of the form page, after the form initialization script
 
 # License
-[MIT](https://raw.githubusercontent.com/yeswehack/vdp-form/master/LICENSE) (c) [YesWeHack](https://www.yeswehack.com/) project@yeswehack.com
+[MIT](https://raw.githubusercontent.com/yeswehack/my-open-vdp/master/LICENSE) (c) [YesWeHack](https://www.yeswehack.com/) project@yeswehack.com
