@@ -4,7 +4,7 @@ variables:
   GIT_DEPTH: 0
   GIT_SUBMODULE_STRATEGY: recursive
   CONTAINER_BASE: "${CI_REGISTRY}/${CI_PROJECT_PATH}"
-  DOCKER_HUB_BASE_TAG: "yeswehack/vdp-form"
+  DOCKER_HUB_BASE_TAG: "yeswehack/my-open-vdp"
 
 stages:
   - check
@@ -60,8 +60,8 @@ Build Docker:
   script:
     # there's an issue with kaniko with multi-stage builds and symlinks
     # so we get ui dist files from ui build artifact
-    - rm -rf app/public/vdp-form
-    - cp -rv ui/dist app/public/vdp-form
+    - rm -rf app/public/my-open-vdp
+    - cp -rv ui/dist app/public/my-open-vdp
     - export VERSION=$(cat version.txt)
     - mkdir -p /kaniko/.docker
     - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"${DOCKER_AUTH}\"}}}" > /kaniko/.docker/config.json
@@ -79,7 +79,7 @@ Publish npm:
   only:
     - tags
   script:
-    - wget -qO- https://registry.npmjs.org/quasar-ui-vdp-form
+    - wget -qO- https://registry.npmjs.org/quasar-ui-my-open-vdp
     - cd ui
     - echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > .npmrc
     - echo "//registry.npmjs.org/:username=zerodisclo" >> .npmrc

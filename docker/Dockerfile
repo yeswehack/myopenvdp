@@ -8,7 +8,7 @@ FROM node:16 AS app_builder
 WORKDIR /app
 COPY /app /app
 RUN yarn
-COPY --from=ui_builder /ui/dist /app/public/vdp-form/
+COPY --from=ui_builder /ui/dist /app/public/my-open-vdp/
 RUN yarn build
 
 FROM node:16

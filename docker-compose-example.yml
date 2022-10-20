@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile
-    hostname: vdp-form-example-app
+    hostname: my-open-vdp-example-app
     ports:
     - 3001:3001
     volumes:
@@ -19,7 +19,7 @@ services:
     - BACKEND_CAPTCHA_CRYPT_PASSWORD=P4$$sw0Rd!
     - FRONTEND_FORM_PGP_KEYS_PATH=/app/frontend/pgpkeys
     networks:
-    - vdp-form-example
+    - my-open-vdp-example
 
 networks:
-  vdp-form-example:
+  my-open-vdp-example:

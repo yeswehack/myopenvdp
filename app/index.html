@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="{{&fonts.url.css}}" rel="stylesheet" type="text/css">
     <link href="{{&quasar.url.css}}" rel="stylesheet" type="text/css" />
-    <link href="/vdp-form/index.css" rel="stylesheet" type="text/css" />
+    <link href="/my-open-vdp/index.css" rel="stylesheet" type="text/css" />
     {{> head}}
   </head>
   <body>
     <script src="{{&vue.url.js}}"></script>
     <script src="{{&quasar.url.js}}"></script>
-    <script src="/vdp-form/index.umd.js"></script>
+    <script src="/my-open-vdp/index.umd.js"></script>
     {{> body/before-form}}
     <div id="q-app">
       <div class="col">
@@ -62,7 +62,7 @@
               .then(() => success('Thanks for your report submission!'))
               .catch((reason) => failure(reason));
           },
-          version: vdpForm.version,
+          version: myOpenVDP.version,
           extensions: '{{&form.attachment.allowed-extensions}}'.split(' '),
           pgpKeys: [
             // {{#form.pgp-keys}}
@@ -86,7 +86,7 @@
         dark: false,
       },
     });
-    app.use(vdpForm);
+    app.use(myOpenVDP);
     app.mount('#q-app');
   </script>
   {{> body/after-script}}

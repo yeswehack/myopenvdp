@@ -6,12 +6,12 @@ import { renderWithConfig as renderWithFrontendConfig } from './src/config/front
 import { getConfig as getBackendConfig } from './src/config/backend';
 
 const root = process.cwd();
-const publicVdpFormPath = path.resolve(path.join(root, 'public', 'vdp-form'));
+const publicMyOpenVdpPath = path.resolve(path.join(root, 'public', 'my-open-vdp'));
 export default defineConfig(async (env) => {
-  const publicVdpFormFiles = await fg('*', { cwd: publicVdpFormPath });
-  if (!publicVdpFormFiles.length) {
+  const publicMyOpenVdpFiles = await fg('*', { cwd: publicMyOpenVdpPath });
+  if (!publicMyOpenVdpFiles.length) {
     throw new Error(
-      `VdpForm files missing in ${publicVdpFormPath}. Please build ../ui before building this project. (cd ../ui ; yarn build)`
+      `MyOpenVDP files missing in ${publicMyOpenVdpPath}. Please build ../ui before building this project. (cd ../ui ; yarn build)`
     );
   }
   return {

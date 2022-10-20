@@ -43,7 +43,7 @@ const getConfig = () => {
       mailReportTemplateHtml: tryReadFileFromEnv(envMailReportTemplateHtml) ?? defaultMailReportTemplateHtml,
       mailReportSubjectTemplate:
         env[envMailReportSubjectTemplate] ?? 'New Vulnerability Disclosure',
-      mailReportFrom: env[envMailReportFrom] ?? `vdp-form@${hostname()}`,
+      mailReportFrom: env[envMailReportFrom] ?? `my-open-vdp@${hostname()}`,
       mailReportTo: env[envMailReportTo] ?? `security@${hostname()}`,
     };
   }

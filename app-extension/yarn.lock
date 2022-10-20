@@ -7,9 +7,9 @@ dateformat@^5.0.3:
   resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-5.0.3.tgz#fe2223eff3cc70ce716931cb3038b59a9280696e"
   integrity sha512-Kvr6HmPXUMerlLcLF+Pwq3K7apHpYmGDVqrxcDasBg86UcKeTSNWbEzU8bwdXnxnR44FtMhJAxI4Bov6Y/KUfA==
 
-quasar-ui-vdp-form@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/quasar-ui-vdp-form/-/quasar-ui-vdp-form-0.1.1.tgz#9bad9afda7f77c6f153ca40627e5d45f704183a6"
-  integrity sha512-23FFCuov9BGwQjIXxyoKyFH4fuTMOIKhK0SafHgoKfjFDISUeTzNrY3p5FI2awDL/OetmEpKugPTaMyq1xr/nA==
+quasar-ui-my-open-vdp@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/quasar-ui-my-open-vdp/-/quasar-ui-my-open-vdp-0.1.2.tgz#cd7096551867a0bd2c52acac0b67585840e50fff"
+  integrity sha512-i5Y9bUhcGtHNypuA8fj+rW7JRSiLwmmaSAHypT4/qxhUgdLkNAvLWXHGaScKMLYLkBothegUeOv6mzkRFL4tnw==
   dependencies:
     dateformat "^5.0.3"

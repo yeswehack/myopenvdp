@@ -18,7 +18,7 @@
           icon="home"
         />
 
-        <q-toolbar-title> Quasar Dev App for open sourced VdpForm </q-toolbar-title>
+        <q-toolbar-title> Quasar Dev App for myOpenVDP </q-toolbar-title>
 
         <div>
           <q-toggle
