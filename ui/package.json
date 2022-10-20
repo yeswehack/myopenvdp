@@ -1,6 +1,6 @@
 {
   "name": "quasar-ui-my-open-vdp",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "author": "project@yeswehack.com",
   "description": "A form to anonymously disclose vulnerabilities",
   "license": "MIT",
