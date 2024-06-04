@@ -1,6 +1,8 @@
 # MyOpenVDP
 
-A web application to securely disclose vulnerabilities.
+MyOpenVDP is a free web application to install a vulnerability disclosure policy or a vulnerability disclosure program on your assets. (VDP)
+
+A vulnerability disclosure policy or a coordinated vulnerability disclosure (CVD) is a channel that provides security researchers with clear guidelines in order to run vulnerability discovery activities.
 
 [![docker](https://img.shields.io/docker/v/yeswehack/my-open-vdp?label=yeswehack%2Fmy-open-vdp&logo=docker&sort=semver&style=flat-square)](https://hub.docker.com/r/yeswehack/my-open-vdp)
 [![npm](https://img.shields.io/npm/v/quasar-ui-my-open-vdp?label=quasar-ui-my-open-vdp&logo=npm&style=flat-square)](https://www.npmjs.com/package/quasar-ui-my-open-vdp/)
